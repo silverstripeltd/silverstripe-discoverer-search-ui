@@ -1,0 +1,49 @@
+.search-ui {
+  &.container, .container {
+    margin: 0 auto;
+    max-width: 76rem;
+    padding: 0 2rem;
+
+    @include media-breakpoint-up(lg) {
+      max-width: 98rem;
+    }
+
+    @include media-breakpoint-up(xl) {
+      max-width: 118rem;
+    }
+
+    @include media-breakpoint-up(xxl) {
+      max-width: 140rem;
+    }
+
+    &--full {
+      max-width: unset;
+      padding: 0;
+    }
+
+    &--relative {
+      position: relative;
+    }
+  }
+
+  /**
+   * Helper classes for grid layout.
+   * .grid is used for wrapping elements
+   * .grid__item--1 is used to specify the width of a grid item` (Where 1 is a number from 1-12)
+   * .grid__item--start-1 is used to specify at which column an item is positioned
+   */
+  &.grid, .grid {
+    @include grid;
+  }
+
+  @for $i from 1 through 12 {
+    .grid__item--#{$i} {
+      grid-column-end: span $i;
+    }
+
+    .grid__item--start-#{$i} {
+      grid-column-start: $i;
+    }
+  }
+}
+

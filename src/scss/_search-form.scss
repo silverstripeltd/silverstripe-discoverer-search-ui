@@ -1,0 +1,100 @@
+.search-ui {
+  color: $color-font;
+  padding: 5rem 0;
+
+  &-form {
+    grid-column: 1 / span 12;
+    margin-top: 5rem;
+
+    @include media-breakpoint-up(lg) {
+      grid-column: 3 / span 8;
+    }
+
+    fieldset {
+      ul {
+        list-style-type: none;
+
+        input[type=checkbox] {
+          margin-right: 1rem;
+        }
+      }
+
+      .fieldholder-small-label {
+        margin-right: 1rem;
+      }
+
+      .fieldgroup {
+        display: flex;
+        flex-direction: column;
+        gap: 2.5rem;
+
+        @include media-breakpoint-up(lg) {
+          flex-direction: row;
+        }
+      }
+
+      .checkboxset {
+        padding-left: 1rem;
+      }
+    }
+
+    .btn-toolbar {
+      margin-top: 2rem;
+    }
+
+    select, textarea, input {
+      font-size: 1.6rem;
+      border: 0.1rem solid $color-border;
+      border-radius: 0.4rem;
+      padding: 1rem;
+      max-width: 100%;
+    }
+
+    select {
+      min-width: 20rem;
+    }
+
+    label {
+      border: none;
+    }
+  }
+
+  &-results {
+
+    &__container {
+      grid-column: 1 / span 12;
+
+      @include media-breakpoint-up(lg) {
+        grid-column: 3 / span 8;
+      }
+    }
+
+    &__list {
+      list-style-type: none;
+      padding-left: 0;
+    }
+  }
+
+  &-result {
+    border-top: 1px solid $color-border;
+    padding: 3rem 0;
+
+    &:last-of-type {
+      border-bottom: 1px solid $color-border;
+    }
+
+    &__title {
+      margin: 0 0 1.6rem;
+    }
+
+    &__link {
+      text-decoration: underline;
+      text-underline-offset: .4rem;
+      font-weight: 600;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}

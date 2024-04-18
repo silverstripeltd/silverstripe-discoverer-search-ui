@@ -1,0 +1,20 @@
+{
+    "name": "silverstripeltd/search-service-ui-theme",
+    "description": "The SilverStripe search service starter theme",
+    "type": "silverstripe-theme",
+    "keywords": [
+        "silverstripe",
+        "theme"
+    ],
+    "license": "BSD-3-Clause",
+    "require": {
+        "silverstripe/framework": "^5",
+        "silverstripeltd/discoverer": "dev-main"
+    },
+    "extra": {
+        "installer-name": "search-ui",
+        "expose": [
+            "themes/search-ui/dist"
+        ]
+    }
+}

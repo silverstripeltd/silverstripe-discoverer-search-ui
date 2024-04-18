@@ -1,0 +1,86 @@
+.search-ui-pagination {
+  align-items: center;
+  display: flex;
+  font-size: 1.8rem;
+  font-weight: 600;
+  justify-content: center;
+  margin: 5rem auto 3rem;
+
+  /* if button reset styles */
+  button {
+    min-width: auto;
+    border: unset;
+    padding: initial;
+  }
+
+  &__arrow,
+  &__number {
+    text-decoration: none;
+    transition: background-color linear .2s, color linear .2s;
+    border-radius: 0.4rem;
+
+    &:focus-visible {
+      outline-offset: 0.1rem;
+    }
+  }
+
+  &__arrow {
+    background: {
+      image: url('#{$icon-path}/arrow-right-charcoal.svg');
+      position: center center;
+      repeat: no-repeat;
+    }
+
+    height: 3rem;
+    margin: 0 1rem;
+    width: 3rem;
+
+    &:hover {
+      background-color: $color-grey-2;
+    }
+
+    &--prev {
+      transform: scaleX(-1);
+    }
+
+    &--disabled {
+      opacity: 0.3;
+    }
+  }
+
+  &__number {
+    color: $color-font;
+    background-color: $color-grey;
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    height: 2.8rem;
+    width: 2.8rem;
+    line-height: 1.8;
+    margin: 0 0.5rem;
+    text-align: center;
+
+    &:hover {
+      background-color: $color-grey-2;
+      text-decoration: none;
+    }
+
+    &--current {
+      background-color: $color-font;
+      color: $color-white;
+
+      &:hover,
+      &:focus {
+        background-color: $color-font;
+        color: $color-white;
+      }
+    }
+  }
+
+  &__dots {
+    color: $color-grey-2;
+    margin: 0 0.5rem;
+    letter-spacing: 0.2em;
+    font-weight: 700;
+  }
+}

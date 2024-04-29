@@ -1,4 +1,4 @@
-<li class="search-ui-facets__item">Facet field: $Name ($FieldName)
+<li class="discoverer-facets__item">Facet field: $Name ($FieldName)
     <% if $Data %>
         <ul>
             <% loop $Data %>

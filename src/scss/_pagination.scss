@@ -1,4 +1,4 @@
-.search-ui-pagination {
+.discoverer-pagination {
   align-items: center;
   display: flex;
   font-size: 1.8rem;
@@ -26,7 +26,7 @@
 
   &__arrow {
     background: {
-      image: url('#{$icon-path}/arrow-right-charcoal.svg');
+      image: url('#{$image-path}/arrow-right-charcoal.svg');
       position: center center;
       repeat: no-repeat;
     }

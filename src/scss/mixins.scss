@@ -83,43 +83,6 @@
   }
 }
 
-/**
- * Mixin to allow easy use of icons.
- *
- * @example
- * .btn {
- *   &::after {
- *     @include icon(my-icon, 16px, 16px)
- *   }
- * }
- */
-@mixin icon($icon, $width: 24px, $height: 24px, $vertical-align: middle, $background-size: contain) {
-  background-image: url('#{$icon-path}/#{$icon}.svg');
-  background-position: center;
-  background-repeat: no-repeat;
-  background-size: $background-size;
-  content: '';
-  display: inline-block;
-  height: $height;
-  vertical-align: $vertical-align;
-  width: $width;
-
-  /* stylelint-disable scss/media-feature-value-dollar-variable */
-  @media all and (-ms-high-contrast: none), (-ms-high-contrast: active) {
-    /* IE10/IE11 CSS styles go here */
-    background-size: auto;
-  }
-  /* stylelint-enable scss/media-feature-value-dollar-variable */
-}
-
-/**
- * Mixin to allow for swapping icon image.
- * Can be used in hover state with @include icon() used
- */
-@mixin icon-image($icon) {
-  background-image: url('#{$icon-path}/#{$icon}.svg');
-}
-
 @mixin focus-outline($offset: 0.4rem) {
   border-radius: 0.1rem;
   text-decoration: none;

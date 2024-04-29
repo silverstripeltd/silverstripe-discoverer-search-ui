@@ -1,12 +1,12 @@
-<div class="search-ui-results__container">
-    <div class="search-ui-facets">
+<div class="discoverer-results__container">
+    <div class="discoverer-facets">
         <% if $Facets %>
             <h2>Facet results:</h2>
 
             $Facets
         <% end_if %>
     </div>
-    <div class="search-ui-results">
+    <div class="discoverer-results">
         <% if $Records %>
             <h2>Search results:</h2>
 
@@ -20,7 +20,7 @@
                 <% end_if %>
             <% end_with %>
         <% else %>
-            <p class="error search-ui-results__message">No search results.</p>
+            <p class="error discoverer-results__message">No search results.</p>
         <% end_if %>
     </div>
 </div>

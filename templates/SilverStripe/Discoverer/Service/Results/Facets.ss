@@ -1,4 +1,4 @@
-<ul class="search-ui-facets">
+<ul class="discoverer-facets">
     <% loop $Me %>
         $Me
     <% end_loop %>

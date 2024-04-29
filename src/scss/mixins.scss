@@ -2,18 +2,10 @@
 @use 'sass:math';
 
 /**
- * Mixin to add grid-gap fallback
- */
-@mixin gap($gap) {
-  gap: $gap;
-  grid-gap: $gap;
-}
-
-/**
  * Media queries
  */
 @mixin media-breakpoint-up($name) {
-  $min: map.get($grid-breakpoints, $name); // stylelint-disable-line
+  $min: map.get($breakpoints, $name); // stylelint-disable-line
 
   @media (min-width: $min) {
     @content;
@@ -22,34 +14,11 @@
 
 /* This should only need to be used in edge case scenarios */
 @mixin media-breakpoint-down($name) {
-  $max: map.get($grid-breakpoints, $name); // stylelint-disable-line
+  $max: map.get($breakpoints, $name); // stylelint-disable-line
 
   @media (max-width: ($max - 1px)) { // stylelint-disable-line unit-blacklist, scss/media-feature-value-dollar-variable
     @content;
   }
-}
-
-@mixin grid($gap:1rem) {
-  @include gap($gap);
-
-  display: grid;
-  grid-template-columns: repeat(12, 1fr);
-}
-
-/**
- * Mixin for laying grid cell in colum flow manner.
- * This is needed for IE11 since it doesn't support auto flow.
- * Refer to `.header__subnav-item` in header.scss for example.
- */
-@mixin grid-col-fow($nthChild, $numCols) {
-  $col: $nthChild % $numCols;
-
-  @if $col == 0 {
-    $col: $numCols; /* stylelint-disable-line */
-  }
-
-  grid-column: $col / span 1;
-  grid-row: math.ceil(divide-by($nthChild, $numCols)) / span 1; // stylelint-disable-line
 }
 
 /**
@@ -122,30 +91,6 @@
 }
 
 /**
- * Apply mobile vertical padding variations to blocks
- */
-@mixin block-padding-y-sm($name) {
-  padding-top: map.get($block-padding-sm, $name); // stylelint-disable-line
-  padding-bottom: map.get($block-padding-sm, $name); // stylelint-disable-line
-}
-
-/**
- * Apply tablet vertical padding variations to blocks
- */
-@mixin block-padding-y-md($name) {
-  padding-top: map.get($block-padding-md, $name); // stylelint-disable-line
-  padding-bottom: map.get($block-padding-md, $name); // stylelint-disable-line
-}
-
-/**
- * Apply desktop vertical padding variations to blocks
- */
-@mixin block-padding-y-lg($name) {
-  padding-top: map.get($block-padding-lg, $name); // stylelint-disable-line
-  padding-bottom: map.get($block-padding-lg, $name); // stylelint-disable-line
-}
-
-/**
  * Reset styles applied to <button> for icons such as those in the header
  */
 @mixin button-reset() {
@@ -161,38 +106,5 @@
   &[disabled]:focus {
     background: none;
     border: 0;
-  }
-}
-
-@mixin block-border($inside_block:false) {
-  &::after {
-    content: '';
-    position: absolute;
-    border-bottom: .1rem solid var(--color-line-grey);
-    height: .1rem;
-    width: 100%;
-    bottom: 0;
-
-    // Width of content-block
-    grid-column: 1 / span 12;
-
-    // Restricted width block has max-width.
-    // Below styles for this max and centered border.
-    // The block SCSS has related styles for content
-    @if $inside_block {
-
-      @include media-breakpoint-up(lg) {
-        grid-column: 2 / span 10;
-        max-width: 77rem;
-        left: 50%;
-        transform: translate(-50%, 0);
-      }
-
-      @include media-breakpoint-up(xl) {
-        grid-column: 3 / span 8;
-      }
-
-    }
-    // Width of content-block
   }
 }

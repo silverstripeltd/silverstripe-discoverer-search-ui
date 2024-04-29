@@ -1,4 +1,4 @@
-<ul class="discoverer-facets">
+<ul>
     <% loop $Me %>
         $Me
     <% end_loop %>

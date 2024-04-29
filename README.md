@@ -73,15 +73,33 @@ have created one, or `Page.ss` could also make sense, though that will usual app
 
 ### Search form and results template
 
-Add the following to your search results page template:
+This theme does **not** specify an outer container width limit. It is very much assumed that your project will have its
+own content containers, and you should continue to use those.
+
+The following snippet is the template for this Discoverer theme:
 
 ```silverstripe
-<div class="container grid discoverer">
+<div class="discoverer">
     <div class="discoverer-form">
         $SearchForm
     </div>
 
     $SearchResults
+</div>
+```
+
+But you will **probably** want to add the above snippet within your project's content container (in this case, perhaps
+your content container is a class called `.container`):
+
+```silverstripe
+<div class="container">
+    <div class="discoverer">
+        <div class="discoverer-form">
+            $SearchForm
+        </div>
+
+        $SearchResults
+    </div>
 </div>
 ```
 

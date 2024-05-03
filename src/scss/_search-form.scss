@@ -58,7 +58,7 @@
     max-width: 100%;
 
     &:invalid {
-      border-color: #ffdee5;
+      border-color: $color-red-light;
     }
 
     &:valid {

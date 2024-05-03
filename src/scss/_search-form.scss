@@ -4,15 +4,11 @@
 }
 
 .discoverer-form {
-  grid-column: 1 / span 12;
   margin-top: 5rem;
-
-  @include media-breakpoint-up(lg) {
-    grid-column: 3 / span 8;
-  }
 
   ul {
     list-style-type: none;
+    padding: 0;
 
     input[type=checkbox] {
       margin-right: 1rem;
@@ -28,19 +24,25 @@
     }
   }
 
-  .fieldholder-small-label {
-    margin-right: 1rem;
-  }
-
   .fieldgroup {
     display: flex;
     flex-direction: column;
     gap: 2.5rem;
+    width: 100%;
 
     @include media-breakpoint-up(lg) {
       flex-direction: row;
       gap: 5.5rem;
     }
+  }
+
+  .fieldgroup-field {
+    flex: 1 1 0px;
+  }
+
+  .fieldholder-small {
+    display: flex;
+    flex-direction: column;
   }
 
   .btn-toolbar {
@@ -54,6 +56,14 @@
     border: 0.1rem solid $color-border;
     border-radius: 0.4rem;
     max-width: 100%;
+
+    &:invalid {
+      border-color: $color-red-light;
+    }
+
+    &:valid {
+      border-color: $color-border;
+    }
   }
 
   select,
@@ -74,14 +84,30 @@
   }
 }
 
-.discoverer-results {
-  &__container {
-    grid-column: 1 / span 12;
+.discoverer-results__container {
+  display: flex;
+  flex-direction: column;
 
-    @include media-breakpoint-up(lg) {
-      grid-column: 3 / span 8;
-    }
+  @include media-breakpoint-up(lg) {
+    flex-direction: row;
   }
+}
+
+.discoverer-facets {
+  flex-grow: 1;
+
+  @include media-breakpoint-up(lg) {
+    flex: 0 0 25rem;
+    padding-right: 2rem;
+  }
+
+  @include media-breakpoint-up(xl) {
+    flex: 0 0 30rem;
+  }
+}
+
+.discoverer-results {
+  flex-grow: 1;
 
   &__list {
     list-style-type: none;

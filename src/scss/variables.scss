@@ -3,20 +3,8 @@ $image-path: '#{$root-path}/images' !default;
 
 $color-black: #000;
 $color-font: #051E2D;
+$color-red-light: #ffdee5;
 $color-white: #FFF;
 $color-grey: #F7F7F7;
 $color-grey-2: #E2E2E2;
 $color-border: #DADADA;
-
-/* Breakpoints */
-/* stylelint-disable unit-blacklist */
-$grid-breakpoints: (
-  xs: 0,
-  sm: 576px,
-  sm-tiles: 630px, // Since the grid doesn't follow set breakpoints, this needs to be a specific value for tiles mobile breakpoint
-  md: 768px,
-  lg: 992px,
-  lg-menu: 1100px,
-  xl: 1200px,
-  xxl: 1600px
-);

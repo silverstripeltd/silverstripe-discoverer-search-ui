@@ -1,11 +1,12 @@
 <div class="discoverer-results__container">
-    <div class="discoverer-facets">
-        <% if $Facets %>
+    <% if $Facets %>
+        <div class="discoverer-facets">
             <h2>Facet results:</h2>
 
             $Facets
-        <% end_if %>
-    </div>
+        </div>
+    <% end_if %>
+
     <div class="discoverer-results">
         <% if $Records %>
             <h2>Search results:</h2>

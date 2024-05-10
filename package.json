@@ -1,6 +1,6 @@
 {
   "name": "discoverer-theme",
-  "description": "The Silverstripe search service starter theme"
+  "description": "The Silverstripe search service starter theme",
   "version": "0.0.0",
   "repository": "https://github.com/silverstripeltd/search-service-ui",
   "author": "<team@silverstripe.com>",

@@ -1,5 +1,5 @@
 .discoverer {
-  color: $color-font;
+  color: var(--color-font);
   padding: 5rem 0;
 }
 
@@ -46,11 +46,6 @@
     flex: 1 1 0px;
   }
 
-  .fieldholder-small {
-    display: flex;
-    flex-direction: column;
-  }
-
   .btn-toolbar {
     margin-top: 2rem;
   }
@@ -59,16 +54,16 @@
   textarea,
   input {
     font-size: 1.6rem;
-    border: 0.1rem solid $color-border;
+    border: 0.1rem solid var(--color-border);
     border-radius: 0.4rem;
     max-width: 100%;
 
     &:invalid {
-      border-color: $color-red-light;
+      border-color: var(--color-red-light);
     }
 
     &:valid {
-      border-color: $color-border;
+      border-color: var(--color-border);
     }
   }
 
@@ -79,6 +74,7 @@
 
   input {
     padding: .6rem 1rem;
+    accent-color: var(--color-accent);
   }
 
   select {
@@ -86,7 +82,7 @@
   }
 
   label {
-    border: none;
+    border: 0;
   }
 }
 
@@ -122,11 +118,11 @@
 }
 
 .discoverer-result {
-  border-top: 1px solid $color-border;
+  border-top: 1px solid var(--color-border);
   padding: 3rem 0;
 
   &:last-of-type {
-    border-bottom: 1px solid $color-border;
+    border-bottom: 1px solid var(--color-border);
   }
 
   &__title {

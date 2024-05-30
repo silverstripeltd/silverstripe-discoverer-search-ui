@@ -26,7 +26,7 @@
 
   &__arrow {
     background: {
-      image: url('#{$image-path}/arrow-right-charcoal.svg');
+      image: url('../arrow-right-charcoal.svg');
       position: center center;
       repeat: no-repeat;
     }
@@ -36,7 +36,7 @@
     width: 3rem;
 
     &:hover {
-      background-color: $color-grey-2;
+      background-color: var(--color-grey-2);
     }
 
     &--prev {
@@ -49,8 +49,8 @@
   }
 
   &__number {
-    color: $color-font;
-    background-color: $color-grey;
+    color: var(--color-font);
+    background-color: var(--color-grey);
     align-items: center;
     justify-content: center;
     display: flex;
@@ -61,24 +61,24 @@
     text-align: center;
 
     &:hover {
-      background-color: $color-grey-2;
+      background-color: var(--color-grey-2);
       text-decoration: none;
     }
 
     &--current {
-      background-color: $color-font;
-      color: $color-white;
+      background-color: var(--color-font);
+      color: var(--color-white);
 
       &:hover,
       &:focus {
-        background-color: $color-font;
-        color: $color-white;
+        background-color: var(--color-font);
+        color: var(--color-white);
       }
     }
   }
 
   &__dots {
-    color: $color-grey-2;
+    color: var(--color-grey-2);
     margin: 0 0.5rem;
     letter-spacing: 0.2em;
     font-weight: 700;

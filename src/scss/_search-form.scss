@@ -24,10 +24,6 @@
   .fieldholder-small {
     display: flex;
     flex-direction: column;
-
-    @include media-breakpoint-up(lg) {
-      flex-direction: row;
-    }
   }
 
   .fieldgroup {

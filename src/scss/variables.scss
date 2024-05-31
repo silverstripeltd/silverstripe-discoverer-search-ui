@@ -1,10 +1,10 @@
-$root-path: '/_resources/vendor/silverstripeltd/discoverer-theme/dist';
-$image-path: '#{$root-path}/images' !default;
-
-$color-black: #000;
-$color-font: #051E2D;
-$color-red-light: #ffdee5;
-$color-white: #FFF;
-$color-grey: #F7F7F7;
-$color-grey-2: #E2E2E2;
-$color-border: #DADADA;
+.discoverer {
+  --color-black: #000;
+  --color-font: #051E2D;
+  --color-red-light: #FFDEE5;
+  --color-white: #FFF;
+  --color-grey: #F7F7F7;
+  --color-grey-2: #E2E2E2;
+  --color-border: #DADADA;
+  --color-accent: #005AE1;
+}

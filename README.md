@@ -8,7 +8,7 @@ you have defined for your application, and we also can't know how you have imple
 
 ## Assumptions
 
-* You are using set up similar to what has been described in [Discoverer > Simple Usage](https://github.com/silverstripeltd/discoverer/blob/main/docs/simple-usage.md).
+* You are using set up similar to what has been described in [Discoverer > Simple Usage](https://github.com/silverstripeltd/silverstripe-discoverer/blob/main/docs/simple-usage.md).
 * In particular:
   * That you will use a Silverstripe `Form` to present your search form.
   * That you have two methods available for your template, one to supply the search form, and the other for your search
@@ -23,11 +23,11 @@ Add the following to your `composer.json`:
     "repositories": [
         {
             "type": "vcs",
-            "url": "git@github.com:silverstripeltd/discoverer.git"
+            "url": "git@github.com:silverstripeltd/silverstripe-discoverer.git"
         },
         {
             "type": "vcs",
-            "url": "git@github.com:silverstripeltd/discoverer-theme.git"
+            "url": "git@github.com:silverstripeltd/silverstripe-discoverer-theme.git"
         }
     ]
 }
@@ -36,13 +36,13 @@ Add the following to your `composer.json`:
 Then run the following:
 
 ```sh
-composer require silverstripeltd/discoverer-theme
+composer require silverstripe/silverstripe-discoverer-theme
 ```
 
 ## Implementation
 
 These instructions assume that you are following a set up similar to the one described in
-[Discoverer > Simple Usage](https://github.com/silverstripeltd/discoverer/blob/main/docs/simple-usage.md).
+[Discoverer > Simple Usage](https://github.com/silverstripeltd/silverstripe-discoverer/blob/main/docs/simple-usage.md).
 
 If you are not, then you will likely need to adjust your approach.
 
@@ -57,7 +57,7 @@ class SearchResultsController extends PageController
     {
         parent::init();
 
-        Requirements::css('vendor/silverstripeltd/discoverer-theme/dist/css/main.css');
+        Requirements::css('vendor/silverstripe/silverstripe-discoverer-theme/dist/css/main.css');
     }
 }
 ```
@@ -68,7 +68,7 @@ Add the following in the `<head>` section of an appropriate Silverstripe templat
 have created one, or `Page.ss` could also make sense, though that will usual apply to all pages).
 
 ```silverstripe
-<% require css("silverstripeltd/discoverer-theme:dist/css/main.css") %>
+<% require css("silverstripe/silverstripe-discoverer-theme:dist/css/main.css") %>
 ```
 
 ### Search form and results template
@@ -107,7 +107,7 @@ your content container is a class called `.container`):
 * A `SearchResults()` method should be available to return a Discoverer `Results` object.
 
 If you don't have this setup, either update the snippet above, or consider implementing the
-[Discoverer > Simple Usage](https://github.com/silverstripeltd/discoverer/blob/main/docs/simple-usage.md)
+[Discoverer > Simple Usage](https://github.com/silverstripeltd/silverstripe-discoverer/blob/main/docs/simple-usage.md)
 example.
 
 ### Records template

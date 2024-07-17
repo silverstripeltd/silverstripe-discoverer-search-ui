@@ -16,25 +16,6 @@ you have defined for your application, and we also can't know how you have imple
 
 ## Installation
 
-Add the following to your `composer.json`:
-
-```json
-{
-    "repositories": [
-        {
-            "type": "vcs",
-            "url": "git@github.com:silverstripeltd/silverstripe-discoverer.git"
-        },
-        {
-            "type": "vcs",
-            "url": "git@github.com:silverstripeltd/silverstripe-discoverer-theme.git"
-        }
-    ]
-}
-```
-
-Then run the following:
-
 ```sh
 composer require silverstripe/silverstripe-discoverer-theme
 ```
@@ -110,20 +91,19 @@ If you don't have this setup, either update the snippet above, or consider imple
 [Discoverer > Simple Usage](https://github.com/silverstripeltd/silverstripe-discoverer/blob/main/docs/simple-usage.md)
 example.
 
-### Records template
+### Record template
 
 As mentioned in the description, Discoverer (and this theme) have no way of knowing what fields you are using in your
 search index.
 
-This theme has provided a sample `Records.ss` template, which assumes some basic fields are available:
+This theme has provided a sample `Record.ss` template, which assumes some basic fields are available:
 
 * `title`
 * `link`
-* `body` (this is a default field for the Silverstripe search service when files like PDFs are processed)
 * `content`
 
 If you do not use these fields, or you have slightly different names for them, then you will need to override the
-template found under `templates/SilverStripe/Discoverer/Service/Results/Records.ss`.
+template found under `templates/SilverStripe/Discoverer/Service/Results/Record.ss`.
 
 ## Contributing
 

@@ -1,0 +1,7 @@
+---
+Name: silverstripe-discoverer-theme
+---
+SilverStripe\Core\Manifest\ModuleManifest:
+  module_priority:
+    - 'silverstripe/silverstripe-discoverer-theme'
+    - 'silverstripe/silverstripe-discoverer'

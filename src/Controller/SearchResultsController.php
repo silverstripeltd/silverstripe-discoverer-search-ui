@@ -53,9 +53,9 @@ class SearchResultsController extends PageController
             FormAction::create($fieldSubmit, _t(self::class . '.FIELD_SUBMIT_LABEL', 'Search'))
         );
 
-        $this->invokeWithExtensions('updateSearchForm', $fields, $actions);
+        $this->invokeWithExtensions('updateSearchFieldLists', $fields, $actions);
 
-        return Form::create(
+        $form = Form::create(
             $this,
             __FUNCTION__,
             $fields,
@@ -63,6 +63,10 @@ class SearchResultsController extends PageController
         )
             ->setFormAction($this->dataRecord->Link())
             ->setFormMethod('GET');
+
+        $this->invokeWithExtensions('updateSearchForm', $form);
+
+        return $form;
     }
 
     public function SearchResults(): ?Results

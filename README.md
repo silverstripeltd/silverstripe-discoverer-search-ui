@@ -1,109 +1,161 @@
-# Discovery Starter Theme
+# Discoverer search UI and starter theme
 
-This theme is used as an optional aid for getting started with Silverstripe's search service. It provides some
-basic Silverstripe templates along with some styling for common form elements and results.
+This search UI and theme is provided as an optional aid for getting started with your search implementation. It provides
+a search results page and controller, along with some default templates and styling for common form and result elements.
 
-Some manual intervention will still be required on your part, as Discover (and this theme) can't know what search fields
-you have defined for your application, and we also can't know how you have implemented search for your application.
-
-## Assumptions
-
-* You are using set up similar to what has been described in [Discoverer > Simple Usage](https://github.com/silverstripeltd/silverstripe-discoverer/blob/main/docs/simple-usage.md).
-* In particular:
-  * That you will use a Silverstripe `Form` to present your search form.
-  * That you have two methods available for your template, one to supply the search form, and the other for your search
-    results object.
+The templates provided make some guesses as to what fields you might have defined for your search, but it's likely that
+some manual intervention will still be required on your part to help this search UI meet your use case.
 
 ## Installation
 
 ```sh
-composer require silverstripe/silverstripe-discoverer-theme
+composer require silverstripe/silverstripe-discoverer-search-ui
 ```
 
-## Implementation
+## Using this module
 
-These instructions assume that you are following a set up similar to the one described in
-[Discoverer > Simple Usage](https://github.com/silverstripeltd/silverstripe-discoverer/blob/main/docs/simple-usage.md).
+### Search results page
 
-If you are not, then you will likely need to adjust your approach.
+This module comes out of the box with a `SearchResults` page which will be made available to you in the CMS. Simply
+create one of these pages on your website, and the `SearchResultsController` will take care of creating the search form
+and displaying results.
 
-### CSS requirements
+### Default fields
 
-Add this into your `SearchResultsController`.
+This search UI assumes that you have the following fields available in your index:
+
+* `title`
+* `link`
+* `content` (optional)
+* `body` (optional)
+
+## Customisations
+
+The out of the box `SearchResultsController` comes with 3 extension points that will allow you to modify the search
+form, and allow you to modify the query that is sent to your search service.
+
+Create a new extension (for example):
 
 ```php
-class SearchResultsController extends PageController
-{
-    protected function init()
-    {
-        parent::init();
+<?php
 
-        Requirements::css('vendor/silverstripe/silverstripe-discoverer-theme/dist/css/main.css');
+namespace App\Extensions;
+
+use SilverStripe\DiscovererSearchUI\Extension\SearchResultsExtension;
+
+class SearchExtension extends SearchResultsExtension
+{
+}
+
+```
+
+By extending `SearchResultsExtension` you'll get some scaffolding for the 3 extension points that are available.
+
+Apply the extension (for example):
+
+```yaml
+SilverStripe\DiscovererSearchUI\Controller\SearchResultsController:
+  extensions:
+    - App\Extensions\SearchExtension
+```
+
+### Update the search query
+
+If you need to add support for any filter fields you've added, if you'd like to specify specific result fields, or if
+you'd like to change absolutely anything else about your `Query` before it is sent to your search service, then you can
+do so by implementing the `updateSearchQuery()` method.
+
+```php
+class SearchExtension extends SearchResultsExtension
+{
+
+    public function updateSearchQuery(Query $query, HTTPRequest $request): void
+    {
+        // A filter called "topics" that we added to our search form
+        $topics = $request->getVar('topics') ?: [];
+
+        // Title field to be limited to 200 chars, and formatted (snippets)
+        $query->addResultField('title', 200, true);
+        // Content field to be limited to 400 chars, and formatted (snippets)
+        $query->addResultField('content', 400, true);
+        // Body field to be limited to 400 chars, and formatted (snippets)
+        $query->addResultField('body', 400, true);
+        // The link to the Page or File
+        $query->addResultField('link');
+
+        // Apply our topics filter (if any were provided)
+        if ($topics) {
+            $query->filter('topic_ids', $topics, Criterion::IN);
+        }
     }
+
 }
 ```
 
-**OR**
+### Add search form fields and actions
 
-Add the following in the `<head>` section of an appropriate Silverstripe template (potentially `SearchResults.ss` if you
-have created one, or `Page.ss` could also make sense, though that will usual apply to all pages).
+By default there is a "search terms" field and a "Search" (submit) action available on your search form, but if you need
+to add (for example) additional filter options, or any other form fields, then you can do that by implementing the
+`updateSearchFieldLists()` method.
 
-```silverstripe
-<% require css("silverstripe/silverstripe-discoverer-theme:dist/css/main.css") %>
+```php
+class SearchExtension extends SearchResultsExtension
+{
+
+    public function updateSearchFieldLists(FieldList $fields, FieldList $actions): void
+    {
+        $topics = DropdownField::create(
+            'topics',
+            'Topics',
+            [
+                1 => 'Transformers',
+                2 => 'Star Wars',
+                3 => 'Star Trek',
+            ]
+        )
+            ->setEmptyString('select one');
+
+        $fields->add($topics);
+    }
+
+}
+
 ```
 
-### Search form and results template
+### Update the search form
 
-This theme does **not** specify an outer container width limit. It is very much assumed that your project will have its
-own content containers, and you should continue to use those.
+If (for whatever reason) you need to change the search form itself, then you can do that by implementing the
+`updateSearchForm()` method.
 
-The following snippet is the template for this Discoverer theme:
+```php
+class SearchExtension extends SearchResultsExtension
+{
 
-```silverstripe
-<div class="discoverer">
-    <div class="discoverer-form">
-        $SearchForm
-    </div>
+    public function updateSearchForm(Form $form): void
+    {
+        // For example, disabling the CSRF token?
+        $form->disableSecurityToken();
+    }
 
-    $SearchResults
-</div>
+}
 ```
 
-But you will **probably** want to add the above snippet within your project's content container (in this case, perhaps
-your content container is a class called `.container`):
+### Search results template
 
-```silverstripe
-<div class="container">
-    <div class="discoverer">
-        <div class="discoverer-form">
-            $SearchForm
-        </div>
-
-        $SearchResults
-    </div>
-</div>
-```
-
-* A `SearchForm()` method should be available to return a Silverstripe `Form` object.
-* A `SearchResults()` method should be available to return a Discoverer `Results` object.
-
-If you don't have this setup, either update the snippet above, or consider implementing the
-[Discoverer > Simple Usage](https://github.com/silverstripeltd/silverstripe-discoverer/blob/main/docs/simple-usage.md)
-example.
+If you would like the change the way that your search form and results are displayed (at a higher level), then you will
+want to override the tamplate found under `templates/SilverStripe/DiscovererSearchUI/Page/Layout/SearchResults.ss`.
 
 ### Record template
 
-As mentioned in the description, Discoverer (and this theme) have no way of knowing what fields you are using in your
-search index.
-
-This theme has provided a sample `Record.ss` template, which assumes some basic fields are available:
+This module has provided a simple `Record.ss` template, which assumes some basic fields are available:
 
 * `title`
 * `link`
 * `content`
+* `body`
 
-If you do not use these fields, or you have slightly different names for them, then you will need to override the
-template found under `templates/SilverStripe/Discoverer/Service/Results/Record.ss`.
+If you do not use these fields, have extra fields you'd like to add, or want to change the way the fields are display,
+then you will need to override the template found under `templates/SilverStripe/Discoverer/Service/Results/Record.ss`.
 
 ## Contributing
 

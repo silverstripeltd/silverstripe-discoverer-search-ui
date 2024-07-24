@@ -12,6 +12,20 @@
         "ui",
         "theme"
     ],
+    "authors": [
+      {
+        "name": "Christopher David Penny",
+        "email": "chris.penny@gmail.com"
+      },
+      {
+        "name": "Bernie Hamlin",
+        "email": "bernie@silverstripe.com"
+      },
+      {
+        "name": "Phillip King",
+        "email": "phillip.king@silverstripe.com"
+      }
+    ],
     "require": {
         "silverstripe/framework": "^5",
         "silverstripe/silverstripe-discoverer": "dev-main"

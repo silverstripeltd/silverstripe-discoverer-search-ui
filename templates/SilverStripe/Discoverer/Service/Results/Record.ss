@@ -6,4 +6,8 @@
     <% if $Content %>
         $Content
     <% end_if %>
+
+    <% if $Body %>
+        $Body
+    <% end_if %>
 </li>

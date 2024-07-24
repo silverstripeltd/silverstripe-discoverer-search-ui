@@ -71,8 +71,8 @@ class SearchExtension extends SearchResultsExtension
 
     public function updateSearchQuery(Query $query, HTTPRequest $request): void
     {
-        // A filter called "topics" that we added to our search form
-        $topics = $request->getVar('topics') ?: [];
+        // A filter called "topic" that we added to our search form
+        $topic = $request->getVar('topic') ?: null;
 
         // Title field to be limited to 200 chars, and formatted (snippets)
         $query->addResultField('title', 200, true);
@@ -84,8 +84,8 @@ class SearchExtension extends SearchResultsExtension
         $query->addResultField('link');
 
         // Apply our topics filter (if any were provided)
-        if ($topics) {
-            $query->filter('topic_ids', $topics, Criterion::IN);
+        if ($topic) {
+            $query->filter('topic_id', $topic, Criterion::EQUAL);
         }
     }
 
@@ -102,18 +102,23 @@ to add (for example) additional filter options, or any other form fields, then y
 class SearchExtension extends SearchResultsExtension
 {
 
-    public function updateSearchFieldLists(FieldList $fields, FieldList $actions): void
+    public function updateSearchFieldLists(FieldList $fields, FieldList $actions, HTTPRequest $request): void
     {
+        // If the form has previously been submitted, see if a topic was specified
+        $topic = $request->getVar('topic') ?: null;
+        // A filter called "topics" that we want to add to our search form
         $topics = DropdownField::create(
-            'topics',
-            'Topics',
+            'topic',
+            'Topic',
             [
                 1 => 'Transformers',
                 2 => 'Star Wars',
                 3 => 'Star Trek',
             ]
         )
-            ->setEmptyString('select one');
+            ->setEmptyString('select one')
+            // Set the previously submitted value to this field
+            ->setValue($topic);
 
         $fields->add($topics);
     }
@@ -131,7 +136,7 @@ If (for whatever reason) you need to change the search form itself, then you can
 class SearchExtension extends SearchResultsExtension
 {
 
-    public function updateSearchForm(Form $form): void
+    public function updateSearchForm(Form $form, HTTPRequest $request): void
     {
         // For example, disabling the CSRF token?
         $form->disableSecurityToken();

@@ -134,4 +134,8 @@
       text-decoration: underline;
     }
   }
+
+  em {
+    background: var(--color-highlight)
+  }
 }

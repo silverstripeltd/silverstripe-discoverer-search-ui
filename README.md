@@ -1,10 +1,6 @@
-# Discoverer search UI and starter theme
+# 🧭 Silverstripe Discoverer > 🎨 Search UI
 
-This search UI and theme is provided as an optional aid for getting started with your search implementation. It provides
-a search results page and controller, along with some default templates and styling for common form and result elements.
-
-The templates provided make some guesses as to what fields you might have defined for your search, but it's likely that
-some manual intervention will still be required on your part to help this search UI meet your use case.
+Provides a Silverstripe page type, search UI, and basic theme to get you started with your search implementation.
 
 ## Installation
 
@@ -13,6 +9,9 @@ composer require silverstripe/silverstripe-discoverer-search-ui
 ```
 
 ## Using this module
+
+The templates provided make some guesses as to what fields you might have defined for your search, but it's likely that
+some manual intervention will still be required on your part to help this search UI meet your use case.
 
 ### Search results page
 

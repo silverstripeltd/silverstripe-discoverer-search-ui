@@ -6,6 +6,12 @@
   justify-content: center;
   margin: 5rem auto 3rem;
 
+  ul {
+    display: flex;
+    flex-direction: row;
+    list-style-type: none;
+  }
+
   /* if button reset styles */
   button {
     min-width: auto;
@@ -14,41 +20,6 @@
   }
 
   &__arrow,
-  &__number {
-    text-decoration: none;
-    transition: background-color linear .2s, color linear .2s;
-    border-radius: 0.4rem;
-
-    &:focus-visible {
-      outline-offset: 0.1rem;
-    }
-  }
-
-  &__arrow {
-    background: {
-      image: url('../arrow-right-charcoal.svg');
-      position: center center;
-      repeat: no-repeat;
-    }
-
-    height: 3rem;
-    margin: 0 1rem;
-    width: 3rem;
-
-    &:hover {
-      background-color: var(--color-grey-2);
-    }
-
-    &--prev {
-      transform: scaleX(-1);
-    }
-
-    &--disabled {
-      opacity: 0.3;
-      cursor: not-allowed;
-    }
-  }
-
   &__number {
     color: var(--color-font);
     background-color: var(--color-grey);
@@ -60,10 +31,17 @@
     line-height: 1.8;
     margin: 0 0.5rem;
     text-align: center;
+    text-decoration: none;
+    transition: background-color linear .2s, color linear .2s;
+    border-radius: 0.4rem;
 
     &:hover {
       background-color: var(--color-grey-2);
       text-decoration: none;
+    }
+
+    &:focus-visible {
+      outline-offset: 0.1rem;
     }
 
     &--current {
@@ -75,6 +53,11 @@
         background-color: var(--color-font);
         color: var(--color-white);
       }
+    }
+
+    &--disabled {
+      opacity: 0.3;
+      cursor: not-allowed;
     }
   }
 

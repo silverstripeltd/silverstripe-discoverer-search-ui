@@ -1,8 +1,8 @@
 {
-  "name": "silverstripe-discoverer-theme",
-  "description": "The Silverstripe search service starter theme",
+  "name": "silverstripe-discoverer-search-ui",
+  "description": "Search UI and theme for the Discoverer search module",
   "version": "0.0.0",
-  "repository": "https://github.com/silverstripeltd/silverstripe-discoverer-theme",
+  "repository": "https://github.com/silverstripeltd/silverstripe-discoverer-search-ui",
   "author": "<team@silverstripe.com>",
   "license": "MIT",
   "scripts": {

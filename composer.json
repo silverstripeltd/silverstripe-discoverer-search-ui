@@ -38,7 +38,7 @@
         }
     },
     "extra": {
-        "installer-name": "silverstripe-discoverer-theme",
+        "installer-name": "silverstripe-discoverer-search-ui",
         "expose": [
             "dist"
         ]

@@ -1,7 +1,7 @@
 ---
-Name: silverstripe-discoverer-theme
+Name: silverstripe-discoverer-search-ui
 ---
 SilverStripe\Core\Manifest\ModuleManifest:
   module_priority:
-    - 'silverstripe/silverstripe-discoverer-theme'
+    - 'silverstripe/silverstripe-discoverer-search-ui'
     - 'silverstripe/silverstripe-discoverer'

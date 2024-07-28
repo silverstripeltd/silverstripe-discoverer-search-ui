@@ -48,6 +48,7 @@ class SearchResultsController extends PageController
 
         $fields = FieldList::create(
             TextField::create($fieldKeywords, _t(self::class . '.FIELD_KEYWORD_LABEL', 'Search terms'), $keywords)
+                ->setInputType('search')
         );
 
         $actions = FieldList::create(

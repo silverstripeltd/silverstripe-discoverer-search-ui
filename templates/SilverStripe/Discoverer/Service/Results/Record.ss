@@ -1,6 +1,8 @@
 <li class="discoverer-result">
     <h3 class="discoverer-result__title">
-        <a href="{$Link}<% if $AnalyticsData %>?$AnalyticsData<% end_if %>" class="link link--transparent-underline discoverer-result__link">$Title</a>
+        <a href="{$Link}<% if $AnalyticsData %>?$AnalyticsData<% end_if %>"
+           class="discoverer-result__link"
+        >$Title</a>
     </h3>
 
     <% if $Content %>

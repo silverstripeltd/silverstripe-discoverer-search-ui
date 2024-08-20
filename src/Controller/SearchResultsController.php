@@ -157,8 +157,13 @@ class SearchResultsController extends PageController
         $this->invokeWithExtensions('updateSuggestionQuery', $suggestion);
 
         $suggestions = $service->querySuggestion($suggestion, $index);
-        $suggestions->setDesiredLinkUrl($this->dataRecord->Link());
-        $suggestions->setDesiredQueryStringField($this->config()->get('field_keywords'));
+
+        if (!$suggestions->getSuggestions()) {
+            return null;
+        }
+
+        $suggestions->setTargetQueryUrl($this->dataRecord->Link());
+        $suggestions->setTargetQueryStringField($this->config()->get('field_keywords'));
 
         return $suggestions;
     }

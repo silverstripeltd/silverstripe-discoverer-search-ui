@@ -1,8 +1,8 @@
 <ul class="discoverer-suggestions__list">
     <% loop $Me %>
-        <% if $Up.DesiredUrl && $Up.DesiredQueryField %>
+        <% if $Up.TargetQueryUrl && $Up.TargetQueryStringField %>
             <li class="discoverer-suggestion">
-                <a href="{$Up.DesiredUrl}?{$Up.DesiredQueryField}={$Me}"
+                <a href="{$Up.TargetQueryUrl}?{$Up.TargetQueryStringField}={$Me}"
                    class="discoverer-suggestion__link"
                 >$Me</a>
             </li>

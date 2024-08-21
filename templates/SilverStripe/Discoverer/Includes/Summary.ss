@@ -1,1 +1,1 @@
-<p class="discoverer-results__summary">Displaying <% if $LastItem > 0 %>$FirstItem<% else %>0<% end_if %> - $LastItem results of $TotalItems</p>
+<p class="discoverer-results__summary"><%t SilverStripe\Discoverer\Includes\Summary.Results 'Displaying {first} - {last} results of {total}' first=$FirstItem last=$LastItem total=$TotalItems %></p>

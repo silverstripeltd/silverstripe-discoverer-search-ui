@@ -1,7 +1,7 @@
 <div class="discoverer-results__container">
     <% if $Facets %>
         <div class="discoverer-facets">
-            <h2>Facet results:</h2>
+            <h2><%t SilverStripe\Discoverer\Service\Results\Results.FacetResults 'Facet results' %></h2>
 
             $Facets
         </div>
@@ -9,7 +9,7 @@
 
     <div class="discoverer-results">
         <% if $Records %>
-            <h2>Search results:</h2>
+            <h2><%t SilverStripe\Discoverer\Service\Results\Results.SearchResults 'Search results' %></h2>
 
             <% with $Records %>
                 <% include SilverStripe\Discoverer\Includes\Summary %>
@@ -21,7 +21,7 @@
                 <% end_if %>
             <% end_with %>
         <% else %>
-            <p class="error discoverer-results__message">No search results.</p>
+            <p class="error discoverer-results__message"><%t SilverStripe\Discoverer\Service\Results\Results.NoResults 'No search results.' %></p>
         <% end_if %>
     </div>
 </div>

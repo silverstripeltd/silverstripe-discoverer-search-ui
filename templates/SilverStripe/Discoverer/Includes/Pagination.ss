@@ -1,25 +1,23 @@
 <% if $MoreThanOnePage %>
-    <nav aria-label="Search paginaiton" class="discoverer-pagination">
+    <nav aria-label="<%t SilverStripe\Discoverer\Includes\Pagination.PaginationLabel 'Search paginaiton' %>" class="discoverer-pagination">
         <ul>
-            <% if $NotFirstPage %>
-                <li>
+            <li>
+                <% if $NotFirstPage %>
                     <a
                         class="discoverer-pagination__arrow discoverer-pagination__arrow--prev"
                         href="$PrevLink"
                         {$Attributes}
-                        aria-label="Previous page"
+                        aria-label="<%t SilverStripe\Discoverer\Includes\Pagination.PreviousPage 'Previous page' %>"
                     >&laquo;</a>
-                </li>
-            <% else %>
-                <li>
+                <% else %>
                     <a
                         class="discoverer-pagination__arrow discoverer-pagination__arrow--prev discoverer-pagination__arrow--disabled"
                         href="#"
-                        aria-label="Previous page (not available)"
+                        aria-label="<%t SilverStripe\Discoverer\Includes\Pagination.PreviousPageDisabled 'Previous page (not available)' %>"
                         aria-disabled="true"
                     >&laquo;</a>
-                </li>
-            <% end_if %>
+                <% end_if %>
+            </li>
 
             <% loop $PaginationSummary(2) %>
                 <li>
@@ -42,25 +40,23 @@
                 </li>
             <% end_loop %>
 
-            <% if $NotLastPage %>
-                <li>
+            <li>
+                <% if $NotLastPage %>
                     <a
                         class="discoverer-pagination__arrow discoverer-pagination__arrow--next"
                         href="$NextLink"
                         {$Attributes}
-                        aria-label="Next page"
+                        aria-label="<%t SilverStripe\Discoverer\Includes\Pagination.NextPage 'Next page' %>"
                     >&raquo;</a>
-                </li>
-            <% else %>
-                <li>
+                <% else %>
                     <a
                         class="discoverer-pagination__arrow discoverer-pagination__arrow--next discoverer-pagination__arrow--disabled"
                         href="#"
-                        aria-label="Next page (not available)"
+                        aria-label="<%t SilverStripe\Discoverer\Includes\Pagination.NextPageDisabled 'Next page (not available)' %>"
                         aria-disabled="true"
                     >&raquo;</a>
-                </li>
-            <% end_if %>
+                <% end_if %>
+            </li>
         </ul>
     </nav>
 <% end_if %>

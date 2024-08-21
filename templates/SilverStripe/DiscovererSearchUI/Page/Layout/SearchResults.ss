@@ -5,7 +5,7 @@
 
     <% if $QuerySuggestions %>
         <div class="discoverer-suggestions">
-            <h2>Search suggestions:</h2>
+            <h2><%t SilverStripe\DiscovererSearchUI\Page\SearchResults.SearchSuggestions 'Search suggestions' %></h2>
 
             $QuerySuggestions
         </div>

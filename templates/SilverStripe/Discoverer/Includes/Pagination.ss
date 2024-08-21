@@ -1,5 +1,5 @@
 <% if $MoreThanOnePage %>
-    <nav aria-label="<%t SilverStripe\Discoverer\Includes\Pagination.PaginationLabel 'Search paginaiton' %>" class="discoverer-pagination">
+    <nav aria-label="<%t SilverStripe\Discoverer\Includes\Pagination.PaginationLabel 'Search pagination' %>" class="discoverer-pagination">
         <ul>
             <li>
                 <% if $NotFirstPage %>

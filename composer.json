@@ -28,7 +28,7 @@
     ],
     "require": {
         "silverstripe/framework": "^5",
-        "silverstripe/silverstripe-discoverer": "dev-feature/query-suggestions"
+        "silverstripe/silverstripe-discoverer": "^1.1"
     },
     "config": {
         "allow-plugins": {
@@ -37,8 +37,6 @@
             "silverstripe/vendor-plugin": true
         }
     },
-    "minimum-stability": "dev",
-    "prefer-stable": true,
     "extra": {
         "installer-name": "silverstripe-discoverer-search-ui",
         "expose": [

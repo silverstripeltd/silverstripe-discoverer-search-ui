@@ -1,6 +1,6 @@
 <li class="discoverer-result">
     <h3 class="discoverer-result__title">
-        <a href="{$Link}<% if $AnalyticsData %>?$AnalyticsData<% end_if %>"
+        <a href="{$getDecoratedLink($Link)}"
            class="discoverer-result__link"
         >$Title</a>
     </h3>

@@ -28,7 +28,7 @@
     ],
     "require": {
         "silverstripe/framework": "^5",
-        "silverstripe/silverstripe-discoverer": "^1.1"
+        "silverstripe/silverstripe-discoverer": "^1.2"
     },
     "config": {
         "allow-plugins": {

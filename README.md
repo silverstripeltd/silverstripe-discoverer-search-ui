@@ -28,6 +28,48 @@ This search UI assumes that you have the following fields available in your inde
 * `content` (optional)
 * `body` (optional)
 
+## Spelling suggestions (aka "did you mean")
+
+**Not to be confused with Query suggestions (aka autocomplete).**
+
+Spelling suggestions for queries can be enabled with the following environment variable.
+
+```yaml
+SEARCH_SPELLING_SUGGESTIONS_ENABLED=1
+```
+
+Note: Spelling suggestions is an API query that happens **after** you have received results - so it will impact your
+page load times.
+
+The spelling suggestions feature needs to know what fields you would like it to search in. By default, it **only**
+provides suggestions based on the `title` field. You can add additional fields by updating the following configuration.
+
+```yaml
+SilverStripe\DiscovererSearchUI\Controller\SearchResultsController:
+  # Provide spelling suggestions whenever there is 5 or less search results
+  spelling_suggestion_fields:
+    - content
+    - body
+```
+
+By default, these suggestions will be provided when you have zero (`0`) search results. This default can be updated
+through the following configruation.
+
+```yaml
+SilverStripe\DiscovererSearchUI\Controller\SearchResultsController:
+  # Provide spelling suggestions whenever there is 5 or less search results
+  result_count_for_spelling_suggestions: 5
+```
+
+By default, you will receive (up to) 1 suggestion (there aren't always spelling suggestions for a given query). This
+default can be udpated through the following configuration.
+
+```yaml
+SilverStripe\DiscovererSearchUI\Controller\SearchResultsController:
+  # Provide (up to) 5 spelling suggestions
+  spelling_suggestions_limit: 5
+```
+
 ## Customisations
 
 The out of the box `SearchResultsController` comes with 3 extension points that will allow you to modify the search

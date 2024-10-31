@@ -19,7 +19,7 @@ use SilverStripe\View\Requirements;
 class SearchResultsController extends PageController
 {
 
-    public const ENV_SUGGESTIONS_ENABLED = 'SEARCH_SUGGESTIONS_ENABLED';
+    private const ENV_SPELLING_SUGGESTIONS_ENABLED = 'SEARCH_SPELLING_SUGGESTIONS_ENABLED';
 
     private static array $allowed_actions = [
         'SearchForm',
@@ -35,9 +35,13 @@ class SearchResultsController extends PageController
 
     private static int $per_page = 10;
 
-    private static int $result_count_for_suggestions = 0;
+    private static int $result_count_for_spelling_suggestions = 0;
 
-    private static int $suggestions_limit = 4;
+    private static int $spelling_suggestions_limit = 1;
+
+    private static array $spelling_suggestion_fields = [
+        'title',
+    ];
 
     private ?Results $results = null;
 
@@ -84,7 +88,7 @@ class SearchResultsController extends PageController
 
     public function SearchResults(): ?Results
     {
-        // Local cache to make sure we don't perform this task more than one (@see QuerySuggestions())
+        // Local cache to make sure we don't perform this task more than one (@see SpellingSuggestions())
         if ($this->results) {
             return $this->results;
         }
@@ -123,21 +127,22 @@ class SearchResultsController extends PageController
         return $this->results;
     }
 
-    public function QuerySuggestions(): ?Suggestions
+    public function SpellingSuggestions(): ?Suggestions
     {
-        if (!Environment::getEnv(self::ENV_SUGGESTIONS_ENABLED)) {
+        if (!Environment::getEnv(self::ENV_SPELLING_SUGGESTIONS_ENABLED)) {
             return null;
         }
 
         // Get the search results for this request
         $results = $this->SearchResults();
 
+        // No search has been performed yet
         if (!$results) {
             return null;
         }
 
         // Our results contain enough records that we don't want to query for suggestions
-        if ($results->getRecords()->count() > $this->config()->get('result_count_for_suggestions')) {
+        if ($results->getRecords()->count() > $this->config()->get('result_count_for_spelling_suggestions')) {
             return null;
         }
 
@@ -146,24 +151,25 @@ class SearchResultsController extends PageController
         $fieldKeywords = $this->config()->get('field_keywords');
         // The keywords that are being searched
         $keywords = $request->getVar($fieldKeywords);
+        // The fields that we want to query on
+        $suggestionFields = $this->config()->get('spelling_suggestion_fields');
 
         // The index variant that we are fetching records from (as defined under `indexes` in search.yml)
         $index = $this->config()->get('index_variant');
 
         $service = SearchService::singleton();
-        $suggestion = Suggestion::create($keywords);
-        $suggestion->setLimit($this->config()->get('suggestions_limit'));
+        $suggestion = Suggestion::create($keywords, $this->config()->get('spelling_suggestions_limit'), $suggestionFields);
 
         $this->invokeWithExtensions('updateSuggestionQuery', $suggestion);
 
-        $suggestions = $service->querySuggestion($suggestion, $index);
+        $suggestions = $service->spellingSuggestion($suggestion, $index);
 
         if (!$suggestions->getSuggestions()) {
             return null;
         }
 
         $suggestions->setTargetQueryUrl($this->dataRecord->Link());
-        $suggestions->setTargetQueryStringField($this->config()->get('field_keywords'));
+        $suggestions->setTargetQueryStringField($fieldKeywords);
 
         return $suggestions;
     }

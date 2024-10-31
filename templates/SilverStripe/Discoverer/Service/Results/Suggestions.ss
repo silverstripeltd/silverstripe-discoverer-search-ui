@@ -4,10 +4,10 @@
             <li class="discoverer-suggestion">
                 <a href="{$Up.TargetQueryUrl}?{$Up.TargetQueryStringField}={$Me}"
                    class="discoverer-suggestion__link"
-                >$Me</a>
+                >$Me.Raw</a>
             </li>
         <% else %>
-            <li class="discoverer-suggestion">$Me</li>
+            <li class="discoverer-suggestion">$Me.Raw</li>
         <% end_if %>
     <% end_loop %>
 </ul>

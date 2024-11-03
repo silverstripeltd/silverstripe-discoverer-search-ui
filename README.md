@@ -70,6 +70,14 @@ SilverStripe\DiscovererSearchUI\Controller\SearchResultsController:
   spelling_suggestions_limit: 5
 ```
 
+Some services support both "raw" and "foramtted" results for spelling suggestions. Our default behaviour is to **not**
+request formatted suggestions. You can enable this in your requests through the following configuration.
+
+```yaml
+SilverStripe\DiscovererSearchUI\Controller\SearchResultsController:
+    spelling_suggestions_formatted: true
+```
+
 ## Customisations
 
 The out of the box `SearchResultsController` comes with 3 extension points that will allow you to modify the search

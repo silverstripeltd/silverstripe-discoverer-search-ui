@@ -2,12 +2,12 @@
     <% loop $Me %>
         <% if $Up.TargetQueryUrl && $Up.TargetQueryStringField %>
             <li class="discoverer-suggestion">
-                <a href="{$Up.TargetQueryUrl}?{$Up.TargetQueryStringField}={$Me}"
+                <a href="{$Up.TargetQueryUrl}?{$Up.TargetQueryStringField}={$Me.Raw}"
                    class="discoverer-suggestion__link"
-                >$Me.Raw</a>
+                >$Me</a>
             </li>
         <% else %>
-            <li class="discoverer-suggestion">$Me.Raw</li>
+            <li class="discoverer-suggestion">$Me</li>
         <% end_if %>
     <% end_loop %>
 </ul>

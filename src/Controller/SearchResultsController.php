@@ -39,6 +39,8 @@ class SearchResultsController extends PageController
 
     private static int $spelling_suggestions_limit = 1;
 
+    private static bool $spelling_suggestions_formatted = false;
+
     private static array $spelling_suggestion_fields = [
         'title',
     ];
@@ -153,12 +155,19 @@ class SearchResultsController extends PageController
         $keywords = $request->getVar($fieldKeywords);
         // The fields that we want to query on
         $suggestionFields = $this->config()->get('spelling_suggestion_fields');
+        // Whether we want to have formatted results (if supported by our search service)
+        $suggestionsFormatted = $this->config()->get('spelling_suggestions_formatted');
 
         // The index variant that we are fetching records from (as defined under `indexes` in search.yml)
         $index = $this->config()->get('index_variant');
 
         $service = SearchService::singleton();
-        $suggestion = Suggestion::create($keywords, $this->config()->get('spelling_suggestions_limit'), $suggestionFields);
+        $suggestion = Suggestion::create(
+            $keywords,
+            $this->config()->get('spelling_suggestions_limit'),
+            $suggestionFields,
+            $suggestionsFormatted
+        );
 
         $this->invokeWithExtensions('updateSuggestionQuery', $suggestion);
 

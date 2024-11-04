@@ -46,7 +46,6 @@ provides suggestions based on the `title` field. You can add additional fields b
 
 ```yaml
 SilverStripe\DiscovererSearchUI\Controller\SearchResultsController:
-  # Provide spelling suggestions whenever there is 5 or less search results
   spelling_suggestion_fields:
     - content
     - body
@@ -57,7 +56,6 @@ through the following configruation.
 
 ```yaml
 SilverStripe\DiscovererSearchUI\Controller\SearchResultsController:
-  # Provide spelling suggestions whenever there is 5 or less search results
   result_count_for_spelling_suggestions: 5
 ```
 
@@ -66,7 +64,6 @@ default can be udpated through the following configuration.
 
 ```yaml
 SilverStripe\DiscovererSearchUI\Controller\SearchResultsController:
-  # Provide (up to) 5 spelling suggestions
   spelling_suggestions_limit: 5
 ```
 

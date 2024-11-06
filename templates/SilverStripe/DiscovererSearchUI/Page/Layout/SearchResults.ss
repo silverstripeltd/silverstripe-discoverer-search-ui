@@ -3,11 +3,11 @@
         $SearchForm
     </div>
 
-    <% if $QuerySuggestions %>
+    <% if $SpellingSuggestions %>
         <div class="discoverer-suggestions">
             <h2><%t SilverStripe\DiscovererSearchUI\Page\SearchResults.SearchSuggestions 'Search suggestions' %></h2>
 
-            $QuerySuggestions
+            $SpellingSuggestions
         </div>
     <% end_if %>
 

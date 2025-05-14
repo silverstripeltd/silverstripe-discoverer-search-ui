@@ -20,7 +20,7 @@ use SilverStripe\View\Requirements;
 class SearchResultsController extends PageController
 {
 
-    private const ENV_SPELLING_SUGGESTIONS_ENABLED = 'SEARCH_SPELLING_SUGGESTIONS_ENABLED';
+    private const string ENV_SPELLING_SUGGESTIONS_ENABLED = 'SEARCH_SPELLING_SUGGESTIONS_ENABLED';
 
     private static array $allowed_actions = [
         'SearchForm',

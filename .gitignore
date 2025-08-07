@@ -2,7 +2,10 @@
 .phpunit.result.cache
 yarn.lock
 /composer.lock
-/.idea
 /mix-manifest.json
 /node_modules/
 /vendor/
+
+# IDE
+.idea
+.vscode

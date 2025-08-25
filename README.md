@@ -111,12 +111,19 @@ If you need to add support for any filter fields you've added, if you'd like to 
 you'd like to change absolutely anything else about your `Query` before it is sent to your search service, then you can
 do so by implementing the `updateSearchQuery()` method.
 
+If updating templates so that the Query is shown on the page it is important to make sure it is sanitised
+to mitigate potential cross-site scripting (xss) attacks. See example below on how to update the Query.
+
 ```php
 class SearchExtension extends SearchResultsExtension
 {
 
     public function updateSearchQuery(Query $query, HTTPRequest $request): void
     {
+        // Sanitise the query string to mitigate xss
+        $keywords = $query->getQueryString();
+        $query->setQueryString(Convert::raw2xml($keywords));
+        
         // A filter called "topic" that we added to our search form
         $topic = $request->getVar('topic') ?: null;
 

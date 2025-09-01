@@ -251,7 +251,7 @@ create an extension for the `Results` class and add a custom function that can b
 ```` php
 public function sanitisedQuery(Query $query): DBText
 {
-    return DBText::create()->setValue($query->forTemplate());
+    return DBText::create()->setValue($query->getQueryString());
 }
 ````
 

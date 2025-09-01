@@ -225,8 +225,8 @@ $query = Query::create($keywords);
 ````
 
 Also, any sanitisation that you do at this point might mean a valid search term is escaped, leading to an incorrect
-set of search results. For example, if searching for `O'Leary` you don't want to escape html entities at this point, since
-this will results in `O&#039;Leary` being sent to elastic.
+set of search results. For example, if searching for `O'Leary` you don't want to escape html entities, since
+this will convert and send `O&#039;Leary` to elastic.
 
 #### Showing the search term in the search page input field
 
@@ -258,7 +258,10 @@ public function sanitisedQuery(Query $query): DBText
 In this case, because the return type is `DBText`, the Silverstripe templating system will handle safe encoding
 of `$sanitisedQuery` for you.
 
-
+#### Handling raw values from Elastic
+Elastic has the ability to return `raw` values on result fields. If outputting these to the template you will need
+to consider whether they are safe or whether you need to sanitise/escape the raw content. For further information,
+see https://www.elastic.co/guide/en/app-search/current/sanitization-guide.html
 
 ## Contributing
 

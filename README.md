@@ -111,19 +111,12 @@ If you need to add support for any filter fields you've added, if you'd like to 
 you'd like to change absolutely anything else about your `Query` before it is sent to your search service, then you can
 do so by implementing the `updateSearchQuery()` method.
 
-If updating templates so that the Query is shown on the page it is important to make sure it is sanitised
-to mitigate potential cross-site scripting (xss) attacks. See example below on how to update the Query.
-
 ```php
 class SearchExtension extends SearchResultsExtension
 {
 
     public function updateSearchQuery(Query $query, HTTPRequest $request): void
     {
-        // Sanitise the query string to mitigate xss
-        $keywords = $query->getQueryString();
-        $query->setQueryString(Convert::raw2xml($keywords));
-        
         // A filter called "topic" that we added to our search form
         $topic = $request->getVar('topic') ?: null;
 
@@ -214,6 +207,61 @@ This module has provided a simple `Record.ss` template, which assumes some basic
 
 If you do not use these fields, have extra fields you'd like to add, or want to change the way the fields are display,
 then you will need to override the template found under `templates/SilverStripe/Discoverer/Service/Results/Record.ss`.
+
+### Mitigating against XSS
+When handling user input (such as a search term that might be passed in on the querystring of a link) it is important
+to consider security and to understand when and where that user input needs to be sanitised.
+
+#### Preparing the query
+Generally speaking you shouldn't need to sanitise the user search term that you pass to the `Query` class. The
+search service client should handle this in a safe manner and do any escaping it needs to, such as escaping quotes and
+prevent the query json being manipulated.
+
+````php
+$keywords = $request->getVar($fieldKeywords);
+
+// Instantiate a new Query, and provide the search terms that we wish to search for
+$query = Query::create($keywords);
+````
+
+Also, any sanitisation that you do at this point might mean a valid search term is escaped, leading to an incorrect
+set of search results. For example, if searching for `O'Leary` you don't want to escape html entities, since
+this will convert and send `O&#039;Leary` to the search service.
+
+#### Showing the search term in the search page input field
+
+````php
+$keywords = $this->getRequest()->getVar($fieldKeywords);
+
+$fields = FieldList::create(
+    TextField::create($fieldKeywords, _t(self::class . '.FIELD_KEYWORD_LABEL', 'Search terms'), $keywords)
+        ->setInputType('search')
+);
+````
+When configuring your search form and passing the search term to a `TextField` this won't need sanitising,
+since the templating system will handle this for you. 
+
+#### Including the query on the page
+The potential for cross site-scripting (where malicious code can be inserted into the page) can occur when outputting user
+input back to the page - for example, if you wish to modify the results template to include `Showing 1 of 10 results for "my search term"`.
+
+If your implementation requires you to include the query within the results template, one way you could do this is to
+create an extension for the `Results` class and add a custom function that can be called from the Results template.
+
+```` php
+public function sanitisedQuery(Query $query): DBText
+{
+    return DBText::create()->setValue($query->getQueryString());
+}
+````
+
+For further information about XSS and how the Silverstripe templating system helps keep you safe against attacks,
+see https://docs.silverstripe.org/en/5/developer_guides/security/secure_coding/#xss-cross-site-scripting
+
+#### Handling raw values from the search service
+Search services such as Elastic have the ability to return `raw` values on result fields. If outputting these to the
+template you will need to consider whether they are safe or whether you need to sanitise/escape the raw content.
+For further information, see https://www.elastic.co/guide/en/app-search/current/sanitization-guide.html
 
 ## Contributing
 

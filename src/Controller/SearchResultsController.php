@@ -14,6 +14,7 @@ use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\Form;
 use SilverStripe\Forms\FormAction;
 use SilverStripe\Forms\TextField;
+use SilverStripe\ORM\FieldType\DBText;
 use SilverStripe\View\Requirements;
 
 class SearchResultsController extends PageController
@@ -60,8 +61,8 @@ class SearchResultsController extends PageController
         $fieldKeywords = $this->config()->get('field_keywords');
         $fieldSubmit = $this->config()->get('field_submit');
 
-        // The keyword that we want to search
-        $keywords = Convert::raw2xml($this->getRequest()->getVar($fieldKeywords));
+        // The keyword that we want to search (templating will handle escaping for the input field)
+        $keywords = $this->getRequest()->getVar($fieldKeywords);
 
         $fields = FieldList::create(
             TextField::create($fieldKeywords, _t(self::class . '.FIELD_KEYWORD_LABEL', 'Search terms'), $keywords)

@@ -212,9 +212,9 @@ then you will need to override the template found under `templates/SilverStripe/
 When handling user input (such as a search term that might be passed in on the querystring of a link) it is important
 to consider security and to understand when and where that user input needs to be sanitised.
 
-#### Sending the query to Elastic
+#### Preparing the query
 Generally speaking you shouldn't need to sanitise the user search term that you pass to the `Query` class. The
-Elastic client should handle this in a safe manner and do any escaping it needs to, such as escaping quotes and
+search service client should handle this in a safe manner and do any escaping it needs to, such as escaping quotes and
 prevent the query json being manipulated.
 
 ````php
@@ -226,7 +226,7 @@ $query = Query::create($keywords);
 
 Also, any sanitisation that you do at this point might mean a valid search term is escaped, leading to an incorrect
 set of search results. For example, if searching for `O'Leary` you don't want to escape html entities, since
-this will convert and send `O&#039;Leary` to elastic.
+this will convert and send `O&#039;Leary` to the search service.
 
 #### Showing the search term in the search page input field
 
@@ -255,13 +255,13 @@ public function sanitisedQuery(Query $query): DBText
 }
 ````
 
-In this case, because the return type is `DBText`, the Silverstripe templating system will handle safe encoding
-of `$sanitisedQuery` for you.
+For further information about XSS and how the Silverstripe templating system helps keep you safe against attacks,
+see https://docs.silverstripe.org/en/5/developer_guides/security/secure_coding/#xss-cross-site-scripting
 
-#### Handling raw values from Elastic
-Elastic has the ability to return `raw` values on result fields. If outputting these to the template you will need
-to consider whether they are safe or whether you need to sanitise/escape the raw content. For further information,
-see https://www.elastic.co/guide/en/app-search/current/sanitization-guide.html
+#### Handling raw values from the search service
+Search services such as Elastic have the ability to return `raw` values on result fields. If outputting these to the
+template you will need to consider whether they are safe or whether you need to sanitise/escape the raw content.
+For further information, see https://www.elastic.co/guide/en/app-search/current/sanitization-guide.html
 
 ## Contributing
 

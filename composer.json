@@ -27,8 +27,9 @@
         }
     ],
     "require": {
-        "silverstripe/framework": "^5",
-        "silverstripe/silverstripe-discoverer": "^2"
+        "php": "^8.3",
+        "silverstripe/framework": "^6",
+        "silverstripe/silverstripe-discoverer": "3.0.x-dev"
     },
     "config": {
         "allow-plugins": {
@@ -41,6 +42,9 @@
         "installer-name": "silverstripe-discoverer-search-ui",
         "expose": [
             "dist"
-        ]
+        ],
+        "branch-alias": {
+            "dev-main": "2.0.x-dev"
+        }
     }
 }

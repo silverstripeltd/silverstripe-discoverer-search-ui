@@ -20,7 +20,7 @@ use SilverStripe\View\Requirements;
 class SearchResultsController extends PageController
 {
 
-    private const ENV_SPELLING_SUGGESTIONS_ENABLED = 'SEARCH_SPELLING_SUGGESTIONS_ENABLED';
+    private const string ENV_SPELLING_SUGGESTIONS_ENABLED = 'SEARCH_SPELLING_SUGGESTIONS_ENABLED';
 
     private static array $allowed_actions = [
         'SearchForm',
@@ -32,7 +32,7 @@ class SearchResultsController extends PageController
 
     private static string $field_submit = 'search';
 
-    private static string $index_variant = 'main';
+    private static string $index_suffix = 'main';
 
     private static int $per_page = 10;
 
@@ -109,8 +109,8 @@ class SearchResultsController extends PageController
 
         // Pagination field (as configured)
         $fieldPagination = $this->config()->get('field_pagination');
-        // The index variant that we are fetching records from (as defined under `indexes` in search.yml)
-        $index = $this->config()->get('index_variant');
+        // The index that we are fetching records from (as defined under `indexes` in search.yml)
+        $indexSuffix = $this->config()->get('index_suffix');
         // How many records we want to display per page
         $perPage = $this->config()->get('per_page');
         // Pagination (if supplied)
@@ -125,7 +125,7 @@ class SearchResultsController extends PageController
 
         $this->invokeWithExtensions('updateSearchQuery', $query, $request);
 
-        $this->results = $service->search($query, $index);
+        $this->results = $service->search($query, $indexSuffix);
 
         return $this->results;
     }
@@ -159,8 +159,8 @@ class SearchResultsController extends PageController
         // Whether we want to have formatted results (if supported by our search service)
         $suggestionsFormatted = $this->config()->get('spelling_suggestions_formatted');
 
-        // The index variant that we are fetching records from (as defined under `indexes` in search.yml)
-        $index = $this->config()->get('index_variant');
+        // The index that we are fetching records from (as defined under `indexes` in search.yml)
+        $indexSuffix = $this->config()->get('index_suffix');
 
         $service = SearchService::singleton();
         $suggestion = Suggestion::create(
@@ -172,7 +172,7 @@ class SearchResultsController extends PageController
 
         $this->invokeWithExtensions('updateSuggestionQuery', $suggestion);
 
-        $suggestions = $service->spellingSuggestion($suggestion, $index);
+        $suggestions = $service->spellingSuggestion($suggestion, $indexSuffix);
 
         if (!$suggestions->getSuggestions()) {
             return null;

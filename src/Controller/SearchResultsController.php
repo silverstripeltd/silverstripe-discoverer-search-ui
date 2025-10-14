@@ -110,7 +110,7 @@ class SearchResultsController extends PageController
         // Pagination field (as configured)
         $fieldPagination = $this->config()->get('field_pagination');
         // The index that we are fetching records from (as defined under `indexes` in search.yml)
-        $indexSuffix = $this->config()->get('index_suffix');
+        $indexSuffix = $this->getIndexSuffix();
         // How many records we want to display per page
         $perPage = $this->config()->get('per_page');
         // Pagination (if supplied)
@@ -160,7 +160,7 @@ class SearchResultsController extends PageController
         $suggestionsFormatted = $this->config()->get('spelling_suggestions_formatted');
 
         // The index that we are fetching records from (as defined under `indexes` in search.yml)
-        $indexSuffix = $this->config()->get('index_suffix');
+        $indexSuffix = $this->getIndexSuffix();
 
         $service = SearchService::singleton();
         $suggestion = Suggestion::create(
@@ -184,4 +184,10 @@ class SearchResultsController extends PageController
         return $suggestions;
     }
 
+    private function getIndexSuffix(): string
+    {
+        $suffix = $this->config()->get('index_suffix');
+        $this->extend('updateIndexSuffix', $suffix);
+        return $suffix;
+    }
 }

@@ -3,7 +3,6 @@
 namespace SilverStripe\DiscovererSearchUI\Controller;
 
 use PageController;
-use SilverStripe\Core\Convert;
 use SilverStripe\Core\Environment;
 use SilverStripe\Discoverer\Query\Query;
 use SilverStripe\Discoverer\Query\Suggestion;
@@ -14,7 +13,6 @@ use SilverStripe\Forms\FieldList;
 use SilverStripe\Forms\Form;
 use SilverStripe\Forms\FormAction;
 use SilverStripe\Forms\TextField;
-use SilverStripe\ORM\FieldType\DBText;
 use SilverStripe\View\Requirements;
 
 class SearchResultsController extends PageController

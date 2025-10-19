@@ -26,4 +26,9 @@ class SearchResultsExtension extends Extension
         // Override this method if you would like to update the Query made to your search service
     }
 
+    public function updateIndexSuffix(string &$suffix): void
+    {
+        // Override this method if you would like to update the Index the query will be run on
+    }
+
 }

@@ -1,3 +1,5 @@
+# Implementing Fluent
+
 <!-- TOC -->
 * [Implementing Fluent](#implementing-fluent)
   * [Index per language - recommended](#index-per-language---recommended)
@@ -7,8 +9,6 @@
     * [Single index using filters](#single-index-using-filters)
     * [Single index with separate fields per language](#single-index-with-separate-fields-per-language)
 <!-- TOC -->
-
-# Implementing Fluent
 
 [Fluent](https://github.com/tractorcow-farm/silverstripe-fluent/) is a localisation module which helps managing content in multiple languages. When searching in different languages there are a couple of ways to handle localised content:
 
@@ -169,7 +169,7 @@ class MySearchExtension extends SearchResultsExtension
 
 ## Single index options - not recommended
 
-Below is a short brainstorm of some other options that are possible, but not recommended. We will not be providing code samples for these opions, as we do not support them as a use-case.
+Below is a short brainstorm of some other options that are possible, but not recommended. We will not be providing code samples for these options, as we do not support them as a use-case.
 
 ### Single index using filters
 

@@ -1,18 +1,46 @@
+<!-- TOC -->
+* [Implementing Fluent](#implementing-fluent)
+  * [Index per language - recommended](#index-per-language---recommended)
+    * [If you are using the Forager Fluent module](#if-you-are-using-the-forager-fluent-module)
+    * [If you are NOT using the Forager Fluent module](#if-you-are-not-using-the-forager-fluent-module)
+  * [Single index options - not recommended](#single-index-options---not-recommended)
+    * [Single index using filters](#single-index-using-filters)
+    * [Single index with separate fields per language](#single-index-with-separate-fields-per-language)
+<!-- TOC -->
+
 # Implementing Fluent
 
 [Fluent](https://github.com/tractorcow-farm/silverstripe-fluent/) is a localisation module which helps managing content in multiple languages. When searching in different languages there are a couple of ways to handle localised content:
 
 ## Index per language - recommended
 
-The cleanest way to provide multi language search is by using a different index for each language. This helps to simplify the logic when loading content into indexes and when making queries to find content. It is supported by the [Forager](https://github.com/silverstripeltd/silverstripe-forager/) module which has a [companion fluent module](https://github.com/silverstripeltd/silverstripe-forager-fluent/) that allows you to tag an index with a locale and update the indexing job to only fetch content from that locale when indexing.
+The cleanest and safest way to provide multi-language search is to use a different index for each language. This helps to simplify the logic of loading content into indexes, and it also helps to ensure that different language content doesn't "bleed" into search results where you wouldn't expect them. This setup is supported by the [Forager](https://github.com/silverstripeltd/silverstripe-forager/) module and its [companion Fluent module](https://github.com/silverstripeltd/silverstripe-forager-fluent/) that allows you to tag an index with a locale, which in turn, allows the Forager module to index the correct localised content into the correct indexes.
 
-The fluent module has an assumption that localised content is presented separately on the front-end (eg by a separate URL path or domain) and using a separate index reflects this assumption. This means that when searching you can choose the appropriate index to query on based on the current locale. This module provides the `updateIndexSuffix` extension point which allows you to [change the index that will be queried](../README.md#change-the-index-used-for-querying). To do that with fluent you could use an extension like this:
+The Fluent module has an assumption that all localised content is presented separately from each other on the front-end (eg by a separate URL path or domain), and using a separate index reflects this assumption. This means that when searching, you can choose the appropriate index to query on based on the current locale.
+
+The advantage to this approach is its simplicity and that it uses a similar mental model to the Fluent module. If however you want to search for content across multiple languages you will need to make multiple queries and combine the results.
+
+This module provides the `updateIndexSuffix()` extension point which allows you to [change the index that will be queried](../README.md#change-the-index-used-for-querying).
+
+### If you are using the Forager Fluent module
+
+If you are using the [Forager Fluent](https://github.com/silverstripeltd/silverstripe-forager-fluent/) module, then you already have a record of which index relates to which locale, and you simply need to look up that information when updating the index suffix. You can do this by implementing the `updateIndexSuffix()` extension point like so:
 
 ```php
-    public function updateIndexSuffix(& $suffix): void
+namespace App\Extensions;
+
+class MySearchExtension extends SearchResultsExtension
+{
+
+    public function updateIndexSuffix(string &$suffix): void
     {
-        // grab current locale
+        // Grab current locale
         $locale = FluentState::singleton()->getLocale();
+
+        if (!$locale) {
+            // No locale detected, you might want to handle this case differently (EG: throw an exception)
+            return;
+        }
 
         $indexConfigurations = IndexConfiguration::singleton()
             ->getIndexConfigurations();
@@ -25,35 +53,130 @@ The fluent module has an assumption that localised content is presented separate
                 continue;
             }
 
-            // first matching index used
+            // First matching index used
             $suffix = $indexSuffix;
+
             return;
-        }
-    }
-```
-
-The advantage to this approach is its simplicity and that it uses a similar mental model to the fluent module. If however you want to search for content across multiple languages you will need to make multiple queries and combine the results.
-
-## Single index with filters
-
-Another option is to use a single index but tag documents with their locale. When searching you can then use [a filter](https://github.com/silverstripeltd/silverstripe-discoverer/blob/2/docs/detailed-querying.md#filters) to limit searches to a single language. The downside to this approach is that the index may become quite large and potentially can hit document field limits and query performance can be slower with more documents. There is also less separation of content so there is more potential to include incorrect results in the search. This approach is **not recommended** because there is no direct indexing support, you will need to customise any indexing process to create an index with content from multiple locales.
-
-At query time you can use the [updateSearchQuery](../README.md#update-the-search-query) extension to add a filter based on the detected locale such as:
-
-```php
-class SearchExtension extends SearchResultsExtension
-{
-
-    public function updateSearchQuery(Query $query, HTTPRequest $request): void
-    {
-        // grab current locale
-        $locale = FluentState::singleton()->getLocale();
-
-        // Apply our locale filter
-        if ($locale) {
-            $query->filter('locale', $locale, Criterion::EQUAL);
         }
     }
 
 }
 ```
+
+```yaml
+SilverStripe\DiscovererSearchUI\Controller\SearchResultsController:
+  extensions:
+    - App\Extensions\MySearchExtension
+```
+
+### If you are NOT using the Forager Fluent module
+
+The same overall idea applies here (you need to update the index suffix based on what locale your user is browsing), but this documentation can no longer know what information may or may not already be available to your application (because we don't know how you are indexing your content). You will need to implement your own logic to map between locale codes and index suffixes.
+
+One option could be to add a new field to Fluent's `Locale` data object to store the index suffix, and then look up the index suffix from there. An example implementation could look like this:
+
+```php
+namespace App\Extensions;
+
+/**
+ * @property string $IndexSuffix
+ */
+class MyLocaleExtension extends DataExtension
+{
+
+    private static $db = [
+        'IndexSuffix' => 'Varchar(50)',
+    ];
+
+}
+```
+
+```php
+namespace App\Extensions;
+
+class MySearchExtension extends SearchResultsExtension
+{
+
+    public function updateIndexSuffix(string &$suffix): void
+    {
+        // Grab current locale code
+        $localeCode = FluentState::singleton()->getLocale();
+
+        if (!$localeCode) {
+            // No locale code detected, you might want to handle this case differently (EG: throw an exception)
+            return;
+        }
+
+        $locale = Locale::getByLocale($localeCode);
+
+        if (!$locale) {
+            // No matching Locale found, you might want to handle this case differently (EG: throw an exception)
+            return;
+        }
+
+        $suffix = $locale->IndexSuffix;
+    }
+
+}
+```
+
+```yaml
+TractorCow\Fluent\Model\Locale:
+  extensions:
+    - App\Extensions\MyLocaleExtension
+
+SilverStripe\DiscovererSearchUI\Controller\SearchResultsController:
+  extensions:
+    - App\Extensions\MySearchExtension
+```
+
+Another (more hardcoded) option, if your locales are relatively well set in stone, could be to simply use a hardcoded array of values that you can switch between.
+
+```php
+namespace App\Extensions;
+
+class MySearchExtension extends SearchResultsExtension
+{
+
+    private array $localeToIndexSuffixMap = [
+        'en_NZ' => 'en',
+        'fr_FR' => 'fr',
+        // Add more mappings as needed
+    ];
+
+    public function updateIndexSuffix(string &$suffix): void
+    {
+        // Grab current locale
+        $locale = FluentState::singleton()->getLocale();
+
+        if (!$locale) {
+            // No locale detected, you might want to handle this case differently (EG: throw an exception)
+            return;
+        }
+
+        $map = $this->localeToIndexSuffixMap[$locale] ?? null;
+
+        if (!$map) {
+            // No matching suffix found, you might want to handle this case differently (EG: throw an exception)
+            return;
+        }
+
+        $suffix = $map;
+    }
+
+}
+```
+
+## Single index options - not recommended
+
+Below is a short brainstorm of some other options that are possible, but not recommended. We will not be providing code samples for these opions, as we do not support them as a use-case.
+
+### Single index using filters
+
+Search Documents could be given unique IDs per language, and a locale field could be added to each Document. You could then index a separate Document for each language, making sure that they have the correct value set for the `locale` field. At query time, a filter could be applied to limit results to the current locale. This filter could be applied using the same general ideas that were presented above for [Index per language - recommended](#index-per-language---recommended).
+
+The risk with this approach is that there are multiple ways that you could quite easily index or return results in the wrong language. This approach is also not recommended because there is no direct indexing support (EG: The Forager module does not support this use-case).
+
+### Single index with separate fields per language
+
+Perhaps even more difficult and risky than above, could be to have a single Document that contains separate fields for each language (eg: `title_en_nz`, `title_fr_fr`, etc). At query time, the correct fields could be queried based on the current locale.

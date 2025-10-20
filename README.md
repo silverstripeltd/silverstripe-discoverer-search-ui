@@ -77,8 +77,8 @@ SilverStripe\DiscovererSearchUI\Controller\SearchResultsController:
 
 ## Customisations
 
-The out of the box `SearchResultsController` comes with 3 extension points that will allow you to modify the search
-form, and allow you to modify the query that is sent to your search service.
+The out of the box `SearchResultsController` comes with 4 extension points that will allow you to modify the search
+form, allow you to modify the query that is sent to your search service, and allow changing what index the query is sent to.
 
 Create a new extension (for example):
 
@@ -95,7 +95,7 @@ class SearchExtension extends SearchResultsExtension
 
 ```
 
-By extending `SearchResultsExtension` you'll get some scaffolding for the 3 extension points that are available.
+By extending `SearchResultsExtension` you'll get some scaffolding for the 4 extension points that are available.
 
 Apply the extension (for example):
 
@@ -191,6 +191,25 @@ class SearchExtension extends SearchResultsExtension
 }
 ```
 
+### change the index used for querying
+
+If you need to change what index the search should be performed on you can use the `updateIndexSuffix()` method.
+The suffix can depend on what backend service you are using such as [Silverstripe Search](https://github.com/silverstripeltd/silverstripe-discoverer-bifrost?tab=readme-ov-file#understanding-your-engine-prefix-and-suffix) or [Elastic Enterprise Search](https://github.com/silverstripeltd/silverstripe-discoverer-bifrost?tab=readme-ov-file#understanding-your-engine-prefix-and-suffix) (deprecated). If using the Forager module it is usually what you would put in your [configuration file](https://github.com/silverstripeltd/silverstripe-forager/blob/1/docs/en/02_configuration.md#basic-configuration)
+
+```php
+class SearchExtension extends SearchResultsExtension
+{
+
+    public function updateIndexSuffix(string &$suffix): void
+    {
+
+        if ($this->config()->get('is_product_page')) {
+            $suffix = 'product';
+        }
+    }
+}
+```
+
 ### Search results template
 
 If you would like the change the way that your search form and results are displayed (at a higher level), then you will
@@ -239,7 +258,7 @@ $fields = FieldList::create(
 );
 ````
 When configuring your search form and passing the search term to a `TextField` this won't need sanitising,
-since the templating system will handle this for you. 
+since the templating system will handle this for you.
 
 #### Including the query on the page
 The potential for cross site-scripting (where malicious code can be inserted into the page) can occur when outputting user

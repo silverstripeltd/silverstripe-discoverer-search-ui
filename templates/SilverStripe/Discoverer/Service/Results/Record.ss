@@ -1,6 +1,6 @@
 <li class="discoverer-result">
     <h3 class="discoverer-result__title">
-        <a href="{$getDecoratedLink($Link)}"
+        <a href="{$getDecoratedLink($Link.forTemplate)}"
            class="discoverer-result__link"
         >$Title</a>
     </h3>

@@ -29,7 +29,7 @@
     "require": {
         "php": "^8.3",
         "silverstripe/framework": "^6",
-        "silverstripe/silverstripe-discoverer": "3.0.1"
+        "silverstripe/silverstripe-discoverer": "^3"
     },
     "config": {
         "allow-plugins": {

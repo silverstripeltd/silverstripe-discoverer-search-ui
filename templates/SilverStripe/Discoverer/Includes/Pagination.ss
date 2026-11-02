@@ -6,6 +6,7 @@
                     <a
                         class="discoverer-pagination__arrow discoverer-pagination__arrow--prev"
                         href="$PrevLink"
+                        rel="nofollow"
                         {$Attributes}
                         aria-label="<%t SilverStripe\Discoverer\Includes\Pagination.PreviousPage 'Previous page' %>"
                     >&laquo;</a>
@@ -24,6 +25,7 @@
                     <% if $CurrentBool %>
                         <a class="discoverer-pagination__number discoverer-pagination__number--current"
                             href="$Link"
+                            rel="nofollow"
                             {$Up.Attributes}
                             aria-current="page"
                         >$PageNum</a>
@@ -31,6 +33,7 @@
                         <% if $Link %>
                             <a class="discoverer-pagination__number"
                                href="$Link"
+                               rel="nofollow"
                                {$Up.Attributes}
                             >$PageNum</a>
                         <% else %>
@@ -45,6 +48,7 @@
                     <a
                         class="discoverer-pagination__arrow discoverer-pagination__arrow--next"
                         href="$NextLink"
+                        rel="nofollow"
                         {$Attributes}
                         aria-label="<%t SilverStripe\Discoverer\Includes\Pagination.NextPage 'Next page' %>"
                     >&raquo;</a>

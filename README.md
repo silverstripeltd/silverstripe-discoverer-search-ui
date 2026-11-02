@@ -75,6 +75,37 @@ SilverStripe\DiscovererSearchUI\Controller\SearchResultsController:
     spelling_suggestions_formatted: true
 ```
 
+## Search engines and crawlers
+
+Search results pages are generated from whatever a visitor types, so search engines shouldn't index them or follow
+their links. When [search analytics](https://github.com/silverstripeltd/silverstripe-discoverer/blob/main/docs/detailed-result-handling.md#adding-analytics)
+is enabled, result links also carry tracking data, and every crawler that follows one is recorded as a search click.
+
+Out of the box:
+
+* `SearchResultsController` sends an `X-Robots-Tag: noindex, nofollow` header with every response, including search
+  form submissions.
+* Result, pagination and spelling suggestion links have `rel="nofollow"`.
+
+You can change or remove the header through configuration (an empty string sends no header):
+
+```yaml
+SilverStripe\DiscovererSearchUI\Controller\SearchResultsController:
+  robots_header: 'noindex'
+```
+
+If you override the templates, keep `rel="nofollow"` on links in your results page, and add it to any other links you
+render there (for example facet filters or locale switchers).
+
+We also recommend disallowing your search page and tracked links in `robots.txt`:
+
+```
+User-agent: *
+Disallow: /<your-search-page-path>/
+Disallow: /*?_searchAnalytics=
+Disallow: /*&_searchAnalytics=
+```
+
 ## Customisations
 
 The out of the box `SearchResultsController` comes with 4 extension points that will allow you to modify the search

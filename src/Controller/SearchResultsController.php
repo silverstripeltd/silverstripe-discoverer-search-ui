@@ -20,6 +20,8 @@ class SearchResultsController extends PageController
 
     private const string ENV_SPELLING_SUGGESTIONS_ENABLED = 'SEARCH_SPELLING_SUGGESTIONS_ENABLED';
 
+    private const string HEADER_ROBOTS = 'X-Robots-Tag';
+
     private static array $allowed_actions = [
         'SearchForm',
     ];
@@ -33,6 +35,16 @@ class SearchResultsController extends PageController
     private static string $index_suffix = 'main';
 
     private static int $per_page = 10;
+
+    /**
+     * Value of the X-Robots-Tag header sent with every response from this controller, including search form
+     * submissions. Search results pages are generated from user input, so they shouldn't be indexed, and their links
+     * shouldn't be followed: when search analytics is enabled, result links carry tracking data and a crawler
+     * following them is recorded as a search click. Set to an empty string to send no header.
+     *
+     * @config
+     */
+    private static string $robots_header = 'noindex, nofollow';
 
     private static int $result_count_for_spelling_suggestions = 0;
 
@@ -51,6 +63,12 @@ class SearchResultsController extends PageController
         parent::init();
 
         Requirements::css('silverstripe/silverstripe-discoverer-search-ui:dist/css/main.css');
+
+        $robotsHeader = $this->config()->get('robots_header');
+
+        if ($robotsHeader) {
+            $this->getResponse()->addHeader(self::HEADER_ROBOTS, $robotsHeader);
+        }
     }
 
     public function SearchForm(): Form

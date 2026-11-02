@@ -4,6 +4,7 @@
             <li class="discoverer-suggestion">
                 <a href="{$Up.TargetQueryUrl}?{$Up.TargetQueryStringField}={$Me.Raw}"
                    class="discoverer-suggestion__link"
+                   rel="nofollow"
                 >$Me</a>
             </li>
         <% else %>

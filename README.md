@@ -80,7 +80,8 @@ SilverStripe\DiscovererSearchUI\Controller\SearchResultsController:
 CMS users with the "Manage blocked search keywords" permission can maintain a list of words and phrases under
 **Blocked search keywords** in the CMS. A search containing one of them as a whole word (or, for a phrase, those words
 together) returns no results, and the visitor isn't told the search was blocked. The query is never sent to your
-search service, and the same applies to autocomplete and spelling suggestions.
+search service. Autocomplete and spelling suggestion requests are checked the same way, but suggestions returned by
+the service aren't filtered: a suggestion only appears when your indexed content contains that word.
 
 Matching ignores case and punctuation, and only matches whole words: blocking `casino` blocks "Online CASINO!" but not
 "casinos". See

@@ -2,6 +2,7 @@
     <h3 class="discoverer-result__title">
         <a href="{$getDecoratedLink($Link.forTemplate)}"
            class="discoverer-result__link"
+           rel="nofollow"
         >$Title</a>
     </h3>
 

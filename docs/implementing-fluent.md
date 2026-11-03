@@ -180,3 +180,9 @@ The risk with this approach is that there are multiple ways that you could quite
 ### Single index with separate fields per language
 
 Perhaps even more difficult and risky than above, could be to have a single Document that contains separate fields for each language (eg: `title_en_nz`, `title_fr_fr`, etc). At query time, the correct fields could be queried based on the current locale.
+
+## Locale switchers on search results pages
+
+If your search results page renders a locale switcher, add `rel="nofollow"` to its links. Each locale version of a
+results page is another set of result links for crawlers to follow. See
+[Search engines and crawlers](../README.md#search-engines-and-crawlers).

@@ -106,6 +106,26 @@ Disallow: /*?_searchAnalytics=
 Disallow: /*&_searchAnalytics=
 ```
 
+## Blocked search keywords
+
+CMS users with the "Manage blocked search keywords" permission can maintain a list of words and phrases under
+**Blocked search keywords** in the CMS. A search containing one of them as a whole word (or, for a phrase, those words
+together) returns no results, and the visitor isn't told the search was blocked. The query is never sent to your
+search service. Autocomplete and spelling suggestion requests are checked the same way, but suggestions returned by
+the service aren't filtered: a suggestion only appears when your indexed content contains that word.
+
+Matching ignores case and punctuation, and only matches whole words: blocking `casino` blocks "Online CASINO!" but not
+"casinos". See
+[Blocking search keywords](https://github.com/silverstripeltd/silverstripe-discoverer/blob/main/docs/detailed-querying.md#blocking-search-keywords)
+in Discoverer for how matching works.
+
+The list is cached, and only reloaded from the database after a keyword is added, edited or removed, so high search
+volumes don't add database queries. Keywords set in YAML (`ConfigBlockedKeywordProvider.blocked_keywords`) are
+blocked as well, which is useful for a baseline list that applies to every environment.
+
+Run `dev/build` after installing or upgrading to create the keyword table, and give the permission to the groups that
+should manage the list.
+
 ## Customisations
 
 The out of the box `SearchResultsController` comes with 4 extension points that will allow you to modify the search

@@ -29,13 +29,20 @@
     "require": {
         "php": "^8.3",
         "silverstripe/framework": "^6",
-        "silverstripe/silverstripe-discoverer": "^3"
+        "silverstripe/silverstripe-discoverer": "^3.2",
+        "silverstripe/admin": "^3"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.3",
+        "silverstripe/cms": "^6",
+        "slevomat/coding-standard": "~8.18.0"
     },
     "config": {
         "allow-plugins": {
             "composer/installers": true,
             "php-http/discovery": true,
-            "silverstripe/vendor-plugin": true
+            "silverstripe/vendor-plugin": true,
+            "dealerdirect/phpcodesniffer-composer-installer": true
         }
     },
     "extra": {
@@ -46,5 +53,8 @@
         "branch-alias": {
             "dev-main": "2.0.x-dev"
         }
+    },
+    "scripts": {
+        "phpcs": "phpcs --standard=phpcs.xml --extensions=php --encoding=utf-8"
     }
 }

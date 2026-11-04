@@ -75,6 +75,36 @@ SilverStripe\DiscovererSearchUI\Controller\SearchResultsController:
     spelling_suggestions_formatted: true
 ```
 
+## Blocked search keywords
+
+CMS users with the "Manage blocked search keywords" permission can maintain a list of words and phrases under
+**Blocked search keywords** in the CMS. A search containing one of them as a whole word (or, for a phrase, those words
+together) returns no results, and the visitor isn't told the search was blocked. The query is never sent to your
+search service. Autocomplete and spelling suggestion requests are checked the same way, but suggestions returned by
+the service aren't filtered: a suggestion only appears when your indexed content contains that word.
+
+Matching ignores case and punctuation, and only matches whole words: blocking `casino` blocks "Online CASINO!" but not
+"casinos". See
+[Blocking search keywords](https://github.com/silverstripeltd/silverstripe-discoverer/blob/main/docs/detailed-querying.md#blocking-search-keywords)
+in Discoverer for how matching works.
+
+The list is cached for 5 minutes, so high search volumes cost at most one database query per web instance in that
+time. Adding, editing or removing a keyword clears the cache on the web instance that handled the change, so it applies
+there at once. If your site runs on more than one web instance, the others pick the change up when their cached copy
+expires, within 5 minutes. With a shared cache backend (for example Redis or Memcached) for
+`Psr\SimpleCache\CacheInterface.DiscovererBlockedKeywords`, changes apply on every instance at once.
+
+You can change how long the list is cached (in seconds; `0` caches it until it is cleared):
+
+```yaml
+SilverStripe\DiscovererSearchUI\Service\CmsBlockedKeywordProvider:
+  cache_lifetime: 300
+``` Keywords set in YAML (`ConfigBlockedKeywordProvider.blocked_keywords`) are
+blocked as well, which is useful for a baseline list that applies to every environment.
+
+Run `dev/build` after installing or upgrading to create the keyword table, and give the permission to the groups that
+should manage the list.
+
 ## Customisations
 
 The out of the box `SearchResultsController` comes with 4 extension points that will allow you to modify the search

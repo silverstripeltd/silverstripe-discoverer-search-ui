@@ -113,6 +113,54 @@ class CmsBlockedKeywordProviderTest extends SapphireTest
         $this->assertSame([], $provider->getBlockedKeywords());
     }
 
+    public function testKeywordsAreCachedForConfiguredLifetime(): void
+    {
+        $cache = $this->registerRecordingCache();
+        $this->createKeyword('casino');
+
+        CmsBlockedKeywordProvider::singleton()->getBlockedKeywords();
+
+        $this->assertSame([300], $cache->getLifetimes());
+    }
+
+    public function testCacheLifetimeIsConfigurable(): void
+    {
+        CmsBlockedKeywordProvider::config()->set('cache_lifetime', 60);
+        $cache = $this->registerRecordingCache();
+
+        CmsBlockedKeywordProvider::singleton()->getBlockedKeywords();
+
+        $this->assertSame([60], $cache->getLifetimes());
+    }
+
+    public function testZeroCacheLifetimeCachesUntilCleared(): void
+    {
+        CmsBlockedKeywordProvider::config()->set('cache_lifetime', 0);
+        $cache = $this->registerRecordingCache();
+
+        CmsBlockedKeywordProvider::singleton()->getBlockedKeywords();
+
+        $this->assertSame([null], $cache->getLifetimes());
+    }
+
+    public function testOtherInstanceReloadsKeywordsWhenItsCacheExpires(): void
+    {
+        $this->createKeyword('casino');
+        $otherInstanceCache = new Psr16Cache(new ArrayAdapter());
+        $otherInstance = new CmsBlockedKeywordProvider();
+        $otherInstance->setCache($otherInstanceCache);
+        $otherInstance->getBlockedKeywords();
+
+        // A keyword added on this instance only clears this instance's cache
+        $this->createKeyword('lottery');
+
+        $this->assertSame(['casino'], $otherInstance->getBlockedKeywords());
+
+        $otherInstanceCache->clear();
+
+        $this->assertEqualsCanonicalizing(['casino', 'lottery'], $otherInstance->getBlockedKeywords());
+    }
+
     public function testCmsKeywordBlocksSearch(): void
     {
         $this->createKeyword('casino');
@@ -120,6 +168,15 @@ class CmsBlockedKeywordProviderTest extends SapphireTest
 
         $this->assertTrue($blocklist->isBlocked('best Online Casino'));
         $this->assertFalse($blocklist->isBlocked('library opening hours'));
+    }
+
+    private function registerRecordingCache(): RecordingCache
+    {
+        $cache = new RecordingCache(new Psr16Cache(new ArrayAdapter()));
+        Injector::inst()->registerService($cache, CacheInterface::class . '.DiscovererBlockedKeywords');
+        Injector::inst()->unregisterNamedObject(CmsBlockedKeywordProvider::class);
+
+        return $cache;
     }
 
     private function createKeyword(string $keyword): BlockedSearchKeyword

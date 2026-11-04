@@ -88,8 +88,18 @@ Matching ignores case and punctuation, and only matches whole words: blocking `c
 [Blocking search keywords](https://github.com/silverstripeltd/silverstripe-discoverer/blob/main/docs/detailed-querying.md#blocking-search-keywords)
 in Discoverer for how matching works.
 
-The list is cached, and only reloaded from the database after a keyword is added, edited or removed, so high search
-volumes don't add database queries. Keywords set in YAML (`ConfigBlockedKeywordProvider.blocked_keywords`) are
+The list is cached for 5 minutes, so high search volumes cost at most one database query per web instance in that
+time. Adding, editing or removing a keyword clears the cache on the web instance that handled the change, so it applies
+there at once. If your site runs on more than one web instance, the others pick the change up when their cached copy
+expires, within 5 minutes. With a shared cache backend (for example Redis or Memcached) for
+`Psr\SimpleCache\CacheInterface.DiscovererBlockedKeywords`, changes apply on every instance at once.
+
+You can change how long the list is cached (in seconds; `0` caches it until it is cleared):
+
+```yaml
+SilverStripe\DiscovererSearchUI\Service\CmsBlockedKeywordProvider:
+  cache_lifetime: 300
+``` Keywords set in YAML (`ConfigBlockedKeywordProvider.blocked_keywords`) are
 blocked as well, which is useful for a baseline list that applies to every environment.
 
 Run `dev/build` after installing or upgrading to create the keyword table, and give the permission to the groups that

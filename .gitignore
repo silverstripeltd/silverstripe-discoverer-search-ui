@@ -9,3 +9,7 @@ yarn.lock
 # IDE
 .idea
 .vscode
+
+# Test run artefacts (silverstripe/cms test bootstrap creates a stub app/ with Page)
+/app/
+/.phpunit.cache/

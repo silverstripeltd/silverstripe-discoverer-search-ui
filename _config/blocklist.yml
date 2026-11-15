@@ -1,0 +1,12 @@
+---
+Name: discoverer-search-ui-blocklist
+After:
+  - discoverer-blocklist
+---
+SilverStripe\Core\Injector\Injector:
+  SilverStripe\Discoverer\Service\Blocklist\BlockedKeywordProvider:
+    class: SilverStripe\DiscovererSearchUI\Service\CmsBlockedKeywordProvider
+  Psr\SimpleCache\CacheInterface.DiscovererBlockedKeywords:
+    factory: SilverStripe\Core\Cache\CacheFactory
+    constructor:
+      namespace: 'DiscovererBlockedKeywords'

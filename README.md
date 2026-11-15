@@ -99,8 +99,10 @@ You can change how long the list is cached (in seconds; `0` caches it until it i
 ```yaml
 SilverStripe\DiscovererSearchUI\Service\CmsBlockedKeywordProvider:
   cache_lifetime: 300
-``` Keywords set in YAML (`ConfigBlockedKeywordProvider.blocked_keywords`) are
-blocked as well, which is useful for a baseline list that applies to every environment.
+```
+
+Keywords set in YAML (`ConfigBlockedKeywordProvider.blocked_keywords`) are blocked as well, which is useful for a
+baseline list that applies to every environment.
 
 Run `dev/build` after installing or upgrading to create the keyword table, and give the permission to the groups that
 should manage the list.
